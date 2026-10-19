@@ -494,6 +494,35 @@ body {
   animation: serviceCardUp 0.65s var(--ease-spring) 0.24s forwards;
 }
 
+/* Mobile Overlay & Staggered Card Slide Up */
+@keyframes mobileOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mobileCardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-mobile-overlay {
+  animation: mobileOverlayFadeIn 0.2s ease-out forwards;
+}
+
+.animate-mobile-card {
+  animation: mobileCardSlideUp 0.4s var(--ease-spring) backwards;
+}
+
 /* ==========================================================================
    ACCESSIBILITY: Focus rings & Reduced Motion
    ========================================================================== */

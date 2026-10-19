@@ -122,7 +122,12 @@ export default function Navbar() {
       {/* Outer fixed wrapper: transparent, no border, no background, no box-shadow, pointer-events: none */}
       <header
         className="fixed top-4 sm:top-6 left-0 right-0 z-40 flex justify-center pointer-events-none bg-transparent border-0 shadow-none m-0 p-0"
-        style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          boxShadow: 'none',
+          visibility: mobileMenuOpen ? 'hidden' : 'visible',
+        }}
       >
         {/* Floating White Pill: max-width calc(100% - 32px), 3px border, hard shadow, overflow visible */}
         <nav
@@ -135,15 +140,15 @@ export default function Navbar() {
           }}
           aria-label="Main Navigation"
         >
-          {/* Logo on the left: Always visible */}
+          {/* Logo on the left: Always visible, single line, font-size around 22px */}
           <a
             href="#"
             aria-label="Mrwan H. - Back to top"
-            className="flex items-center gap-1.5 font-heading font-extrabold text-xl sm:text-2xl text-stroke tracking-tight hover:opacity-90 transition-opacity select-none group flex-shrink-0"
+            className="flex items-center gap-1.5 font-heading font-extrabold text-[22px] min-[900px]:text-2xl text-stroke tracking-tight hover:opacity-90 transition-opacity select-none group flex-shrink-0 whitespace-nowrap"
           >
             <span>Mrwan H.</span>
             <span
-              className="text-primary text-xl sm:text-2xl group-hover:rotate-45 transition-transform duration-300 inline-block"
+              className="text-primary text-[22px] min-[900px]:text-2xl group-hover:rotate-45 transition-transform duration-300 inline-block"
               aria-hidden="true"
             >
               ✦
@@ -189,7 +194,7 @@ export default function Navbar() {
 
           {/* Right side CTA & Mobile Menu Trigger */}
           <div className="flex items-center gap-3 flex-shrink-0">
-            {/* Desktop "Let's talk" button: Visible at 900px and above */}
+            {/* Desktop "Let's talk" button: Visible ONLY at 900px and above */}
             <a
               href="#contact"
               className="hidden min-[900px]:inline-flex animate-wiggle-periodic neo-btn bg-primary text-white text-sm sm:text-base px-5 py-2 font-bold select-none"
@@ -212,67 +217,83 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Full-screen Mobile Overlay: Below 900px */}
+      {/* Full-screen Mobile Overlay: Below 900px, 100% OPAQUE with grid pattern */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-50 bg-page-bg/95 flex flex-col justify-between p-6 min-[900px]:hidden animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 h-[100dvh] w-full overflow-y-auto min-[900px]:hidden animate-mobile-overlay"
+          style={{
+            backgroundColor: '#F8F6FF',
+            backgroundImage: `
+              linear-gradient(to right, rgba(24, 24, 27, 0.06) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(24, 24, 27, 0.06) 1px, transparent 1px)
+            `,
+            backgroundSize: '32px 32px',
+            padding: '20px',
+          }}
           role="dialog"
           aria-modal="true"
           aria-label="Mobile Navigation Menu"
         >
-          {/* Top Bar with Logo and Close Button */}
-          <div className="flex items-center justify-between">
-            <a
-              href="#"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-1.5 font-heading font-extrabold text-2xl text-stroke"
-            >
-              <span>Mrwan H.</span>
-              <span className="text-primary text-2xl">✦</span>
-            </a>
-
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(false)}
-              className="neo-btn bg-card-bg text-stroke p-2.5 w-11 h-11 flex items-center justify-center"
-              aria-label="Close navigation menu"
-            >
-              <X className="w-6 h-6 stroke-[3]" />
-            </button>
-          </div>
-
-          {/* Large Navigation Links */}
-          <div className="flex flex-col gap-4 my-auto w-full max-w-md mx-auto">
-            {navLinks.map((link, idx) => (
+          <div className="flex flex-col min-h-full max-w-md mx-auto">
+            {/* Top Bar with Logo and Close Button (48x48 white circle with 3px border and hard shadow) */}
+            <div className="flex items-center justify-between w-full mb-6">
               <a
-                key={link.label}
-                href={link.href}
+                href="#"
                 onClick={() => setMobileMenuOpen(false)}
-                className="group flex items-center justify-between p-4 bg-card-bg border-3 border-stroke rounded-2xl shadow-neo font-heading font-extrabold text-2xl sm:text-3xl text-stroke hover:bg-secondary transition-colors"
+                aria-label="Mrwan H. - Back to top"
+                className="flex items-center gap-1.5 font-heading font-extrabold text-[22px] text-stroke tracking-tight whitespace-nowrap select-none"
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono font-bold px-2 py-0.5 bg-page-bg border-2 border-stroke rounded-full">
-                    0{idx + 1}
-                  </span>
-                  <span>{link.label}</span>
-                </div>
-                <ArrowUpRight className="w-6 h-6 text-stroke group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <span>Mrwan H.</span>
+                <span className="text-primary text-[22px]">✦</span>
               </a>
-            ))}
-          </div>
 
-          {/* Mobile Bottom CTA */}
-          <div className="pt-4 flex flex-col gap-3 w-full max-w-md mx-auto">
-            <a
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="neo-btn bg-primary text-white text-lg py-3.5 w-full text-center font-extrabold"
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-12 h-12 rounded-full bg-card-bg border-3 border-stroke shadow-neo flex items-center justify-center text-stroke hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 transition-transform cursor-pointer"
+                aria-label="Close navigation menu"
+              >
+                <X className="w-6 h-6 stroke-[3]" />
+              </button>
+            </div>
+
+            {/* 4 Stacked White Link Cards spaced 14px apart, starting under header */}
+            <div className="flex flex-col gap-[14px] w-full">
+              {navLinks.map((link, idx) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{ animationDelay: `${idx * 60}ms` }}
+                  className="animate-mobile-card group flex items-center justify-between p-4 bg-card-bg border-3 border-stroke rounded-[18px] shadow-neo font-heading font-extrabold text-2xl text-stroke hover:bg-secondary active:scale-[0.98] transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono font-bold px-2 py-0.5 bg-page-bg border-2 border-stroke rounded-full">
+                      0{idx + 1}
+                    </span>
+                    <span>{link.label}</span>
+                  </div>
+                  <ArrowUpRight className="w-6 h-6 text-stroke group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </a>
+              ))}
+            </div>
+
+            {/* Mobile Bottom CTA in normal flow below links with 24px margin-top */}
+            <div
+              className="animate-mobile-card mt-6 flex flex-col items-center w-full pb-6"
+              style={{ animationDelay: `${navLinks.length * 60}ms` }}
             >
-              Let's talk 🚀
-            </a>
-            <p className="text-center text-xs font-medium text-muted">
-              Cairo, Egypt 🇪🇬 ✦ Open for freelance &amp; contracts
-            </p>
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="neo-btn bg-primary text-white text-lg py-4 w-full text-center font-extrabold shadow-neo active:scale-[0.98]"
+              >
+                Let's talk 🚀
+              </a>
+              <p className="text-center text-xs font-bold text-muted mt-3">
+                Cairo, Egypt 🇪🇬 · Open for freelance &amp; contracts
+              </p>
+            </div>
           </div>
         </div>
       )}
