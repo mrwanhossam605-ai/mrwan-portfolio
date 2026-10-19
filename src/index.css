@@ -1,0 +1,521 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ==========================================================================
+     GLOBAL DESIGN TOKENS (CSS Variables for easy theming & customization)
+     ========================================================================== */
+  /* Colors */
+  --color-primary: #2F5BFF;
+  --color-secondary: #FFD200;
+  --color-bg: #F8F6FF;
+  --color-card: #FFFFFF;
+  --color-stroke: #18181B;
+  --color-dark: #18181B;
+  --color-muted: #52525B;
+
+  /* Typography */
+  --font-heading: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+
+  /* Borders & Radius */
+  --border-width: 3px;
+  --radius-card: 20px;
+  --radius-pill: 9999px;
+
+  /* Shadows (Neo-brutalist hard shadows - no blur, no gradients) */
+  --shadow-offset: 4px 4px 0 var(--color-stroke);
+  --shadow-offset-hover: 6px 6px 0 var(--color-stroke);
+  --shadow-offset-active: 0px 0px 0 var(--color-stroke);
+  --shadow-offset-lg: 8px 8px 0 var(--color-stroke);
+
+  /* Animation Easing */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layout & Spacing */
+  --container-max-w: 1200px;
+  --grid-line-color: rgba(24, 24, 27, 0.06);
+  --grid-size: 32px;
+}
+
+/* Background grid pattern */
+body {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-dark);
+  background-color: var(--color-bg);
+  background-image: 
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   SOFT NEO-BRUTALIST UTILITIES
+   ========================================================================== */
+.neo-card {
+  background-color: var(--color-card);
+  border: var(--border-width) solid var(--color-stroke);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-offset);
+}
+
+.neo-pill {
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--color-stroke);
+  box-shadow: var(--shadow-offset);
+}
+
+/* Neo-Brutalist Interactive Buttons */
+.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--color-stroke);
+  box-shadow: var(--shadow-offset);
+  font-family: var(--font-body);
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none;
+}
+
+.neo-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-offset-hover);
+}
+
+.neo-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: var(--shadow-offset-active);
+}
+
+/* Sticker badge styling */
+.neo-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: var(--border-width) solid var(--color-stroke);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-offset);
+  font-weight: 700;
+  font-size: 0.875rem;
+  user-select: none;
+}
+
+/* Pill tags bounce on hover */
+.pill-tag {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease;
+}
+.pill-tag:hover {
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES (Spring & Snappy Sticker-like feel)
+   ========================================================================== */
+
+/* Navbar slide down from -20px */
+@keyframes navSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-nav-slide-down {
+  animation: navSlideDown 0.6s var(--ease-spring) forwards;
+}
+
+/* Let's talk button wiggle every 6 seconds */
+@keyframes btnWiggle {
+  0%, 88%, 100% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(-3deg) scale(1.02);
+  }
+  93% {
+    transform: rotate(3deg) scale(1.02);
+  }
+  96% {
+    transform: rotate(-3deg) scale(1.02);
+  }
+  98% {
+    transform: rotate(1deg);
+  }
+}
+
+.animate-wiggle-periodic {
+  animation: btnWiggle 6s ease-in-out infinite;
+}
+
+/* Hero Badge Pop In: scale 0.6 -> 1, rotate -4deg -> 0 */
+@keyframes heroBadgePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-hero-badge {
+  opacity: 0;
+  animation: heroBadgePop 0.55s var(--ease-spring) 0.1s forwards;
+}
+
+/* Marker Swipe: scaleX 0 -> 1 with origin-left */
+@keyframes markerSwipe {
+  0% {
+    opacity: 0;
+    transform: scaleX(0) rotate(-2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) rotate(-2deg);
+  }
+}
+
+.animate-marker-swipe {
+  transform-origin: left center;
+  animation: markerSwipe 0.55s var(--ease-spring) 0.2s forwards;
+}
+
+/* Text Fade Up (16px) */
+@keyframes fadeSlideUp16 {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up-designer {
+  opacity: 0;
+  animation: fadeSlideUp16 0.55s var(--ease-spring) 0.3s forwards;
+}
+
+.animate-fade-up-subtitle {
+  opacity: 0;
+  animation: fadeSlideUp16 0.6s var(--ease-spring) 0.4s forwards;
+}
+
+/* Buttons Pop In */
+@keyframes buttonPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-btn-primary {
+  opacity: 0;
+  animation: buttonPopIn 0.5s var(--ease-spring) 0.5s forwards;
+}
+
+.animate-btn-secondary {
+  opacity: 0;
+  animation: buttonPopIn 0.5s var(--ease-spring) 0.6s forwards;
+}
+
+/* Portrait Card: slides up 40px, rotate 3deg -> 0 */
+@keyframes cardSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.animate-hero-card {
+  opacity: 0;
+  animation: cardSlideUp 0.65s var(--ease-spring) 0.7s forwards;
+}
+
+/* Sticker Initial Bounce In */
+@keyframes stickerBounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-8deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.12) rotate(4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(var(--sticker-rot, 0deg));
+  }
+}
+
+/* Gentle float loop (translateY ±8px, 4-6s) */
+@keyframes gentleFloatLoop {
+  0%, 100% {
+    transform: translateY(0px) rotate(var(--sticker-rot, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(var(--sticker-rot, 0deg));
+  }
+}
+
+.animate-sticker-starburst {
+  opacity: 0;
+  animation: stickerBounceIn 0.6s var(--ease-spring) 0.8s forwards,
+             gentleFloatLoop 4.2s ease-in-out infinite 1.4s;
+}
+
+.animate-sticker-arrow {
+  opacity: 0;
+  animation: stickerBounceIn 0.6s var(--ease-spring) 0.9s forwards,
+             gentleFloatLoop 4.8s ease-in-out infinite 1.5s;
+}
+
+.animate-sticker-smiley {
+  opacity: 0;
+  animation: stickerBounceIn 0.6s var(--ease-spring) 1.0s forwards,
+             gentleFloatLoop 5.2s ease-in-out infinite 1.6s;
+}
+
+.animate-sticker-pill {
+  opacity: 0;
+  animation: stickerBounceIn 0.6s var(--ease-spring) 1.1s forwards,
+             gentleFloatLoop 5.8s ease-in-out infinite 1.7s;
+}
+
+/* Starburst slow rotation (360deg over 20s) */
+@keyframes slowSpin20s {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-slow-spin {
+  animation: slowSpin20s 20s linear infinite;
+}
+
+/* Headline Sparkle Twinkle (scale + rotate pulse every 3s) */
+@keyframes twinklePulse {
+  0%, 82%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  90% {
+    transform: scale(1.35) rotate(22deg);
+    opacity: 1;
+  }
+  94% {
+    transform: scale(0.9) rotate(-10deg);
+  }
+}
+
+.animate-twinkle {
+  animation: twinklePulse 3s ease-in-out infinite;
+}
+
+/* Service Card Emoji wiggle on card hover */
+@keyframes emojiWiggle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  20% {
+    transform: scale(1.25) rotate(-12deg);
+  }
+  40% {
+    transform: scale(1.25) rotate(12deg);
+  }
+  60% {
+    transform: scale(1.2) rotate(-8deg);
+  }
+  80% {
+    transform: scale(1.15) rotate(6deg);
+  }
+}
+
+.group:hover .animate-emoji-hover {
+  animation: emojiWiggle 0.5s var(--ease-spring) both;
+}
+
+/* Marquee infinite scroll */
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 25s linear infinite;
+  transition: animation-duration 0.3s ease;
+}
+
+.marquee-container:hover .marquee-track {
+  animation-duration: 45s; /* Slow down slightly on hover */
+}
+
+/* ==========================================================================
+   SCROLL REVEALS KEYFRAMES (IntersectionObserver triggered)
+   ========================================================================== */
+
+/* Header sticker pill pop */
+@keyframes scrollPillPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.reveal-pill {
+  animation: scrollPillPop 0.6s var(--ease-spring) forwards;
+}
+
+/* Header heading slide up 24px with fade */
+@keyframes scrollHeadingUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-heading {
+  animation: scrollHeadingUp 0.6s var(--ease-spring) 0.08s forwards;
+}
+
+/* Subtitle follows 100ms later */
+.reveal-subtitle {
+  animation: scrollHeadingUp 0.6s var(--ease-spring) 0.18s forwards;
+}
+
+/* Project Card Left slide-in with slight rotate settling to 0 */
+@keyframes projectCardFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px) rotate(-2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+/* Project Card Right slide-in with slight rotate settling to 0 */
+@keyframes projectCardFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(40px) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+.reveal-project-left {
+  animation: projectCardFromLeft 0.7s var(--ease-spring) forwards;
+}
+
+.reveal-project-right {
+  animation: projectCardFromRight 0.7s var(--ease-spring) forwards;
+}
+
+/* Project card thumbnail scales from 1.08 -> 1 on reveal */
+@keyframes thumbScaleDown {
+  0% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.reveal-thumb-scale {
+  animation: thumbScaleDown 0.8s var(--ease-spring) forwards;
+}
+
+/* Service Card stagger up from 40px */
+@keyframes serviceCardUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-service-1 {
+  animation: serviceCardUp 0.65s var(--ease-spring) 0s forwards;
+}
+
+.reveal-service-2 {
+  animation: serviceCardUp 0.65s var(--ease-spring) 0.12s forwards;
+}
+
+.reveal-service-3 {
+  animation: serviceCardUp 0.65s var(--ease-spring) 0.24s forwards;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: Focus rings & Reduced Motion
+   ========================================================================== */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .marquee-track {
+    animation: none !important;
+    transform: none !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

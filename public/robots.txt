@@ -1,0 +1,5 @@
+# robots.txt for https://mrwanhossam.design
+User-agent: *
+Allow: /
+
+Sitemap: https://mrwanhossam.design/sitemap.xml
