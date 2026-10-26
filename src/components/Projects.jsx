@@ -3,14 +3,38 @@ import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 import { CASE_STUDY_LINKS, BEHANCE_URL } from '../config';
 
-function ProjectCard({ proj, idx }) {
+function ProjectCard({ proj, idx, onOpenCaseStudy }) {
   const [cardRef, cardInView] = useInView({ threshold: 0.2 });
   const isEven = idx % 2 === 0;
+
+  const handleCardClick = (e) => {
+    // Only navigate if user didn't click an interactive link/button inside
+    if (onOpenCaseStudy) {
+      onOpenCaseStudy(proj.slug);
+    }
+  };
+
+  const handleButtonClick = (e) => {
+    e.stopPropagation();
+    if (onOpenCaseStudy) {
+      onOpenCaseStudy(proj.slug);
+    }
+  };
 
   return (
     <article
       ref={cardRef}
-      className={`group bg-card-bg border-3 border-stroke rounded-[24px] shadow-[6px_6px_0_#18181B] hover:shadow-[9px_9px_0_#18181B] hover:-translate-y-1 transition-all duration-200 p-5 sm:p-7 md:p-8 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 ${
+      onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Open ${proj.title} case study`}
+      className={`group bg-card-bg border-3 border-stroke rounded-[24px] shadow-[6px_6px_0_#18181B] hover:shadow-[9px_9px_0_#18181B] hover:-translate-y-1 transition-all duration-200 p-5 sm:p-7 md:p-8 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 cursor-pointer select-none focus:outline-none focus:ring-4 focus:ring-[#3B82F6] ${
         cardInView
           ? isEven
             ? 'reveal-project-left'
@@ -62,7 +86,7 @@ function ProjectCard({ proj, idx }) {
         }`}
       >
         {/* Project Title */}
-        <h3 className="font-heading font-extrabold text-stroke text-2xl sm:text-3xl lg:text-4xl tracking-tight mb-3">
+        <h3 className="font-heading font-extrabold text-stroke text-2xl sm:text-3xl lg:text-4xl tracking-tight mb-3 group-hover:text-[#3B82F6] transition-colors">
           {proj.title}
         </h3>
 
@@ -83,28 +107,27 @@ function ProjectCard({ proj, idx }) {
           ))}
         </div>
 
-        {/* View Case Study Button (arrow shifts diagonally up-right on hover) */}
-        <a
-          href={proj.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="neo-btn bg-primary text-white text-sm sm:text-base px-6 py-3 font-bold group/btn"
+        {/* View Case Study Button (styled with solid blue #3B82F6, rounded-full, black outline/shadow) */}
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          className="neo-btn bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm sm:text-base px-6 py-3.5 font-bold rounded-full border-[3px] border-black shadow-[4px_4px_0px_#000000] hover:shadow-[6px_6px_0px_#000000] active:translate-x-0.5 active:translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer select-none group/btn"
           aria-label={`View case study for ${proj.title}`}
         >
-          <span>View Case Study</span>
-          <ArrowUpRight className="w-4 h-4 stroke-[2.5] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" aria-hidden="true" />
-        </a>
+          <span>View Case Study ↗</span>
+        </button>
       </div>
     </article>
   );
 }
 
-export default function Projects() {
+export default function Projects({ onOpenCaseStudy }) {
   const [headerRef, headerInView] = useInView({ threshold: 0.2 });
 
   const projects = [
     {
       id: '01',
+      slug: 'wakandarides',
       title: 'WakandaRides',
       tagline: 'A carpooling platform for Canada, from ID verification to live trips.',
       tags: ['Mobile App', 'Website', 'Design System', '70+ Screens'],
@@ -118,6 +141,7 @@ export default function Projects() {
     },
     {
       id: '02',
+      slug: 'flaride',
       title: 'FlaRide',
       tagline: 'An African super app combining ride-hailing, food delivery and parcel shipping.',
       tags: ['Mobile App', 'Super App', 'Design System', '80+ Screens'],
@@ -131,6 +155,7 @@ export default function Projects() {
     },
     {
       id: '03',
+      slug: 'almasilah',
       title: 'Al-Masilah',
       tagline: 'A corporate website for a Kuwait-based elevator company, designed in Arabic RTL.',
       tags: ['Website', 'Arabic RTL', 'Corporate'],
@@ -141,6 +166,20 @@ export default function Projects() {
       srcSet: '/almasilah-640.webp 640w, /almasilah.webp 1024w',
       alt: 'Al-Masilah - Corporate Arabic RTL Website Mockup',
       link: CASE_STUDY_LINKS.almasilah,
+    },
+    {
+      id: '04',
+      slug: 'vienna-games',
+      title: 'Vienna Games',
+      tagline: 'An esports tournament hub with live brackets, player stats and gamified rewards.',
+      tags: ['Gaming App', 'Esports', 'Design System', 'Lobby Engine'],
+      bgType: 'orange',
+      bgColor: 'bg-[#FFD200]',
+      badgeBg: 'bg-card-bg text-stroke',
+      image: '/wakanda.webp',
+      srcSet: '/wakanda-640.webp 640w, /wakanda.webp 1024w',
+      alt: 'Vienna Games - Esports Tournament Hub Mockup',
+      link: CASE_STUDY_LINKS.wakandarides,
     },
   ];
 
@@ -181,10 +220,15 @@ export default function Projects() {
         </p>
       </div>
 
-      {/* 3 Large Horizontal Cards Stacked Vertically */}
+      {/* Large Horizontal Cards Stacked Vertically */}
       <div className="flex flex-col gap-12 sm:gap-14">
         {projects.map((proj, idx) => (
-          <ProjectCard key={proj.id} proj={proj} idx={idx} />
+          <ProjectCard
+            key={proj.id}
+            proj={proj}
+            idx={idx}
+            onOpenCaseStudy={onOpenCaseStudy}
+          />
         ))}
       </div>
 
