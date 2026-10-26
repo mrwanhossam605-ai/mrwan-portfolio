@@ -142,8 +142,8 @@ export const CASE_STUDIES = {
     summary:
       'A prestigious corporate digital platform for Kuwait’s leading elevator and architectural mobility company, engineered from the ground up in native Right-to-Left (RTL) Arabic typography and layout hierarchy.',
     metrics: [
-      { label: 'Responsive Pages', value: '4 Key', detail: 'Desktop + Tablet + Mobile' },
-      { label: 'Final Client Revisions', value: '0 Revisions', detail: 'Approved on first delivery' },
+      { label: 'Responsive Pages', value: '4 Key Pages', detail: 'Desktop + Tablet + Mobile' },
+      { label: 'Client Feedback', value: '0 Revisions', detail: 'Approved on first delivery' },
       { label: 'RTL Alignment', value: '100%', detail: 'Natural Arabic reading flow' },
     ],
     mockupImage: '/almasilah.webp',

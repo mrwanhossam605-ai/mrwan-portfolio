@@ -59,7 +59,7 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
             ✦
           </div>
 
-          <div className="relative z-10 max-w-3xl flex flex-col items-start gap-4 sm:gap-6">
+          <div className="relative z-10 max-w-4xl lg:max-w-5xl flex flex-col items-start gap-4 sm:gap-6">
             {/* Subtitle Tags */}
             <div className="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 bg-black text-[#FFD200] border-2 border-black rounded-full text-xs sm:text-sm font-mono font-extrabold shadow-[3px_3px_0px_#FFFFFF] select-none">
               <span>✦</span>
@@ -77,20 +77,26 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
             </p>
 
             {/* Metrics Grid (3 Columns) */}
-            <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 sm:pt-6">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 pt-4 sm:pt-6">
               {caseStudy.metrics.map((metric, idx) => (
                 <div
                   key={idx}
-                  className="bg-white text-black border-[3px] border-black rounded-[20px] p-4 sm:p-5 shadow-[4px_4px_0px_#000000] flex flex-col justify-between"
+                  className="bg-white text-black border-[3px] border-black rounded-[20px] p-4 sm:p-5 lg:p-6 shadow-[4px_4px_0px_#000000] flex flex-col justify-between overflow-hidden min-w-0 flex-1"
                 >
-                  <span className="font-heading font-extrabold text-3xl sm:text-4xl text-[#3B82F6] tracking-tight">
+                  <span
+                    style={{ textWrap: 'balance' }}
+                    className="font-heading font-extrabold text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl text-[#3B82F6] tracking-tight leading-none break-words"
+                  >
                     {metric.value}
                   </span>
-                  <div className="mt-2">
-                    <span className="block font-heading font-extrabold text-sm sm:text-base text-black">
+                  <div className="mt-3">
+                    <span
+                      style={{ textWrap: 'balance' }}
+                      className="block font-heading font-extrabold text-sm sm:text-base text-black leading-snug break-words"
+                    >
                       {metric.label}
                     </span>
-                    <span className="block font-mono text-xs font-bold text-muted">
+                    <span className="block font-mono text-xs font-bold text-muted mt-1 leading-snug break-words">
                       {metric.detail}
                     </span>
                   </div>
