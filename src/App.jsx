@@ -8,6 +8,7 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import LoadingScreen from './components/LoadingScreen';
 
 export default function App() {
   const is404 =
@@ -58,6 +59,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-secondary selection:text-stroke">
+      {/* Modern Neubrutalist Loading Screen & Interactive Replay */}
+      <LoadingScreen />
+
       {/* Accessible Skip to Content Link */}
       <a
         href="#main-content"
