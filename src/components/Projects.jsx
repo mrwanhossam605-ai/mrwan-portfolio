@@ -6,6 +6,7 @@ import { CASE_STUDY_LINKS, BEHANCE_URL } from '../config';
 function ProjectCard({ proj, idx, onOpenCaseStudy }) {
   const [cardRef, cardInView] = useInView({ threshold: 0.2 });
   const isEven = idx % 2 === 0;
+  const isThumbnailLeft = proj.thumbnailSide ? proj.thumbnailSide === 'left' : isEven;
 
   const handleCardClick = (e) => {
     // Only navigate if user didn't click an interactive link/button inside
@@ -42,15 +43,15 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
           : 'opacity-0'
       }`}
     >
-      {/* Thumbnail Frame (Alternates left / right on desktop) */}
+      {/* Thumbnail Frame (Left or Right on desktop based on side alignment) */}
       <div
         className={`relative w-full lg:w-1/2 aspect-[16/11] sm:aspect-[16/10] ${proj.bgColor} border-3 border-stroke rounded-[18px] overflow-hidden flex items-center justify-center p-4 sm:p-6 shadow-inner ${
-          !isEven ? 'lg:order-2' : 'lg:order-1'
+          isThumbnailLeft ? 'lg:order-1' : 'lg:order-2'
         }`}
       >
-        {/* Number Sticker in corner - rotates 8deg on card hover */}
+        {/* Number Sticker in corner - stays neatly inside top-left with ample padding and subtle hover rotation */}
         <div
-          className={`absolute top-3 left-3 z-10 px-3 py-1 font-heading font-extrabold text-sm sm:text-base border-3 border-stroke rounded-xl shadow-neo select-none group-hover:rotate-[8deg] transition-transform duration-300 ${proj.badgeBg}`}
+          className={`absolute top-4 left-4 sm:top-5 sm:left-5 z-20 px-3.5 py-1 font-heading font-extrabold text-sm sm:text-base border-3 border-stroke rounded-xl shadow-[3px_3px_0_#18181B] select-none group-hover:rotate-[4deg] transition-transform duration-200 ${proj.badgeBg}`}
         >
           {proj.id}
         </div>
@@ -82,7 +83,7 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
       {/* Text & Content Block */}
       <div
         className={`w-full lg:w-1/2 flex flex-col items-start justify-center text-left ${
-          !isEven ? 'lg:order-1' : 'lg:order-2'
+          isThumbnailLeft ? 'lg:order-2' : 'lg:order-1'
         }`}
       >
         {/* Project Title */}
@@ -107,11 +108,11 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
           ))}
         </div>
 
-        {/* View Case Study Button (styled with solid blue #3B82F6, rounded-full, black outline/shadow) */}
+        {/* View Case Study Button (flush left alignment, vertical-only hover shadow) */}
         <button
           type="button"
           onClick={handleButtonClick}
-          className="neo-btn bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm sm:text-base px-6 py-3.5 font-bold rounded-full border-[3px] border-black shadow-[4px_4px_0px_#000000] hover:shadow-[6px_6px_0px_#000000] active:translate-x-0.5 active:translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer select-none group/btn"
+          className="bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm sm:text-base px-6 py-3.5 font-bold rounded-full border-[3px] border-black shadow-[4px_4px_0px_#000000] hover:shadow-[4px_6px_0px_#000000] hover:-translate-y-1 active:translate-y-0.5 active:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2 cursor-pointer select-none group/btn self-start m-0"
           aria-label={`View case study for ${proj.title}`}
         >
           <span>View Case Study ↗</span>
@@ -171,14 +172,16 @@ export default function Projects({ onOpenCaseStudy }) {
       id: '04',
       slug: 'vienna-games',
       title: 'Vienna Games',
-      tagline: 'An esports tournament hub with live brackets, player stats and gamified rewards.',
-      tags: ['Gaming App', 'Esports', 'Design System', 'Lobby Engine'],
-      bgType: 'orange',
+      tagline:
+        'One app for a network of dermatology and cosmetic clinics: booking, a skincare marketplace, rides to the clinic and a rewards game that keeps people coming back.',
+      tags: ['Healthcare App', 'Gamification', 'Design System', 'Marketplace'],
+      thumbnailSide: 'left',
+      bgType: 'yellow',
       bgColor: 'bg-[#FFD200]',
       badgeBg: 'bg-card-bg text-stroke',
       image: '/wakanda.webp',
       srcSet: '/wakanda-640.webp 640w, /wakanda.webp 1024w',
-      alt: 'Vienna Games - Esports Tournament Hub Mockup',
+      alt: 'Vienna Games - Healthcare Super App Mockup',
       link: CASE_STUDY_LINKS.wakandarides,
     },
   ];
