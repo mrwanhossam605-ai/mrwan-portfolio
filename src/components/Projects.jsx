@@ -49,13 +49,6 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
           isThumbnailLeft ? 'lg:order-1' : 'lg:order-2'
         }`}
       >
-        {/* Number Sticker in corner - stays neatly inside top-left with ample padding and subtle hover rotation */}
-        <div
-          className={`absolute top-4 left-4 sm:top-5 sm:left-5 z-20 px-3.5 py-1 font-heading font-extrabold text-sm sm:text-base border-3 border-stroke rounded-xl shadow-[3px_3px_0_#18181B] select-none group-hover:rotate-[4deg] transition-transform duration-200 ${proj.badgeBg}`}
-        >
-          {proj.id}
-        </div>
-
         {/* Mockup Image container with soft neo-brutal styling & thumbnail hover zoom to 1.05 */}
         <div className="w-full h-full relative rounded-xl overflow-hidden border-2 border-stroke/20 bg-card-bg/40 flex items-center justify-center">
           <img
@@ -167,22 +160,6 @@ export default function Projects({ onOpenCaseStudy }) {
       srcSet: '/almasilah-640.webp 640w, /almasilah.webp 1024w',
       alt: 'Al-Masilah - Corporate Arabic RTL Website Mockup',
       link: CASE_STUDY_LINKS.almasilah,
-    },
-    {
-      id: '04',
-      slug: 'vienna-games',
-      title: 'Vienna Games',
-      tagline:
-        'One app for a network of dermatology and cosmetic clinics: booking, a skincare marketplace, rides to the clinic and a rewards game that keeps people coming back.',
-      tags: ['Healthcare App', 'Gamification', 'Design System', 'Marketplace'],
-      thumbnailSide: 'left',
-      bgType: 'yellow',
-      bgColor: 'bg-[#FFD200]',
-      badgeBg: 'bg-card-bg text-stroke',
-      image: '/wakanda.webp',
-      srcSet: '/wakanda-640.webp 640w, /wakanda.webp 1024w',
-      alt: 'Vienna Games - Healthcare Super App Mockup',
-      link: CASE_STUDY_LINKS.wakandarides,
     },
   ];
 

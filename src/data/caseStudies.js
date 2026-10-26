@@ -185,68 +185,6 @@ export const CASE_STUDIES = {
       'Final Production Figma Library with Zero Scope Creep',
     ],
     nextProject: {
-      slug: 'vienna-games',
-      title: 'Vienna Games',
-      category: 'Esports Platform',
-    },
-  },
-
-  'vienna-games': {
-    slug: 'vienna-games',
-    id: '04',
-    title: 'Vienna Games',
-    figmaFile: 'vienna-games.fig',
-    badge: 'Healthcare Super App',
-    heroTag: 'Healthcare Super App • Healthcare Network, Iraq • Freelance',
-    color: '#FF4800',
-    accentColor: '#3B82F6',
-    secondaryColor: '#FFD200',
-    summary:
-      'One app for a network of dermatology and cosmetic clinics: booking, a skincare marketplace, rides to the clinic and a rewards game that keeps people coming back.',
-    metrics: [
-      { label: 'All-in-One Experience', value: '4 Services', detail: 'Clinic, store, rides, game' },
-      { label: 'Booking Flow', value: '1 Shared Flow', detail: 'Single unified checkout' },
-      { label: 'Platform Scope', value: 'iOS + Android', detail: 'Flutter engineering handoff' },
-    ],
-    mockupImage: '/wakanda.webp',
-    mockupSrcSet: '/wakanda-640.webp 640w, /wakanda.webp 1024w',
-    sidebar: {
-      role: 'Lead Product & Gamification Designer',
-      client: 'Vienna Clinic Network (Iraq)',
-      timeline: '3 Months',
-      platform: 'Mobile App (iOS & Android)',
-      tools: ['Figma', 'FigJam', 'Illustrator', 'Design System Tokens'],
-    },
-    overview:
-      'A premier regional network of dermatology and cosmetic surgery clinics required a unified mobile super app to modernize patient booking, offer authentic skincare products through an integrated marketplace, coordinate patient rides directly to clinics, and drive repeat engagement via an arcade-style loyalty rewards game.',
-    problems: [
-      {
-        number: '01',
-        title: 'Fragmented Patient Touchpoints',
-        description:
-          'Patients previously booked appointments on WhatsApp, ordered skincare from third-party Instagram pages, and had no reliable clinic transportation. I designed a unified multi-service dashboard connecting appointments, store purchases, and clinic chauffeur rides under a single account.',
-      },
-      {
-        number: '02',
-        title: 'Post-Procedure Patient Retention',
-        description:
-          'Patients often delayed follow-up appointments. I architected an engaging gamification reward wheel and daily skincare check-in streak that rewards patients with loyalty points and exclusive cosmetic product discounts.',
-      },
-      {
-        number: '03',
-        title: 'Complex Doctor & Slot Scheduling',
-        description:
-          'Dermatologists managed tight operating room and clinic consultations. I built an intuitive 3-step appointment flow with live practitioner availability, procedure duration calculators, and pre-care instructions.',
-      },
-    ],
-    deliverables: [
-      'UX Research & Patient Journey Mapping',
-      'Multi-Vertical Information Architecture',
-      'High-Fidelity Mobile UI (iOS & Android)',
-      'Interactive Loyalty & Gamification Engine',
-      'Design System with Reusable Component Tokens',
-    ],
-    nextProject: {
       slug: 'wakandarides',
       title: 'WakandaRides',
       category: 'Carpooling Platform',
