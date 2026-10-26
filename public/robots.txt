@@ -1,5 +1,5 @@
-# robots.txt for https://mrwanhossam.design
+# robots.txt for https://mrwanhossam.vercel.app
 User-agent: *
 Allow: /
 
-Sitemap: https://mrwanhossam.design/sitemap.xml
+Sitemap: https://mrwanhossam.vercel.app/sitemap.xml

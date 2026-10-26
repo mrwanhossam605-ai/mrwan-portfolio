@@ -41,7 +41,7 @@ function ProjectCard({ proj, idx }) {
             height="440"
             loading="lazy"
             alt={proj.alt}
-            className={`w-full h-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-105 ${
+            className={`w-full h-full object-cover object-center transition-transform duration-300 ease-out group-hover:scale-105 ${
               cardInView ? 'reveal-thumb-scale' : 'scale-105'
             }`}
             onError={(e) => {

@@ -4,7 +4,7 @@
  */
 
 // Production domain URL (used for canonical links, OpenGraph, sitemap, etc.)
-export const SITE_URL = 'https://mrwanhossam.design';
+export const SITE_URL = 'https://mrwanhossam.vercel.app';
 
 // Contact & Social Links
 export const EMAIL = 'mrwanhossam605@gmail.com';
