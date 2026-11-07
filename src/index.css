@@ -40,17 +40,21 @@
 }
 
 /* Background grid pattern */
+html,
+body {
+  overflow-x: hidden;
+  background-color: var(--color-bg);
+}
+
 body {
   font-family: var(--font-body);
   font-weight: 500;
   color: var(--color-dark);
-  background-color: var(--color-bg);
   background-image: 
     linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
   background-size: var(--grid-size) var(--grid-size);
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 /* ==========================================================================
@@ -546,5 +550,17 @@ body {
     transform: none !important;
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   CASE STUDY: Project Specs Sticky Behavior (Static on mobile/tablet < 1024px)
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .case-study-specs {
+    position: static !important;
+    top: auto !important;
+    align-self: auto !important;
+    transform: none !important;
   }
 }

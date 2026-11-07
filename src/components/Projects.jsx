@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
-import { CASE_STUDY_LINKS, BEHANCE_URL } from '../config';
+import { CASE_STUDY_LINKS, BEHANCE_URL, PROJECT_INFO } from '../config';
 
 function ProjectCard({ proj, idx, onOpenCaseStudy }) {
   const [cardRef, cardInView] = useInView({ threshold: 0.2 });
@@ -9,7 +9,6 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
   const isThumbnailLeft = proj.thumbnailSide ? proj.thumbnailSide === 'left' : isEven;
 
   const handleCardClick = (e) => {
-    // Only navigate if user didn't click an interactive link/button inside
     if (onOpenCaseStudy) {
       onOpenCaseStudy(proj.slug);
     }
@@ -21,6 +20,15 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
       onOpenCaseStudy(proj.slug);
     }
   };
+
+  const info = PROJECT_INFO[proj.slug] || {};
+
+  // Build info labels array, filtering out empty values
+  const infoLabels = [
+    info.role && `Role: ${info.role}`,
+    info.timeline && `Timeline: ${info.timeline}`,
+    info.scope && `Scope: ${info.scope}`,
+  ].filter(Boolean);
 
   return (
     <article
@@ -43,13 +51,12 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
           : 'opacity-0'
       }`}
     >
-      {/* Thumbnail Frame (Left or Right on desktop based on side alignment) */}
+      {/* Thumbnail Frame */}
       <div
         className={`relative w-full lg:w-1/2 aspect-[16/11] sm:aspect-[16/10] ${proj.bgColor} border-3 border-stroke rounded-[18px] overflow-hidden flex items-center justify-center p-4 sm:p-6 shadow-inner ${
           isThumbnailLeft ? 'lg:order-1' : 'lg:order-2'
         }`}
       >
-        {/* Mockup Image container with soft neo-brutal styling & thumbnail hover zoom to 1.05 */}
         <div className="w-full h-full relative rounded-xl overflow-hidden border-2 border-stroke/20 bg-card-bg/40 flex items-center justify-center">
           <img
             src={proj.image}
@@ -85,27 +92,44 @@ function ProjectCard({ proj, idx, onOpenCaseStudy }) {
         </h3>
 
         {/* Tagline */}
-        <p className="font-body text-muted text-base sm:text-lg leading-relaxed mb-6 font-medium">
+        <p className="font-body text-[#3F3F46] text-base sm:text-lg leading-relaxed mb-4 font-medium">
           {proj.tagline}
         </p>
 
-        {/* Pill Tags (bounces up 2px on hover) */}
+        {/* Info Row – only render if any field present */}
+        {infoLabels.length > 0 && (
+          <div className="flex flex-wrap items-center gap-x-1 text-[13px] sm:text-[14px] text-[#3F3F46] mb-2 font-medium">
+            {infoLabels.map((label, i) => (
+              <React.Fragment key={label}>
+                {i > 0 && <span className="mx-1 select-none" aria-hidden="true">·</span>}
+                <span>{label}</span>
+              </React.Fragment>
+            ))}
+          </div>
+        )}
+
+        {/* Outcome line – only render when filled */}
+        {info.outcome && (
+          <p className="font-bold text-[13px] sm:text-[14px] text-stroke mb-4">{info.outcome}</p>
+        )}
+
+        {/* Pill Tags */}
         <div className="flex flex-wrap gap-2 sm:gap-2.5 mb-8">
           {proj.tags.map((tag) => (
             <span
               key={tag}
-              className="pill-tag px-3 py-1 bg-page-bg text-stroke text-xs sm:text-sm font-bold border-2 border-stroke rounded-full shadow-[2px_2px_0_#18181B] select-none hover:bg-secondary cursor-default"
+              className="pill-tag px-3 py-1 bg-page-bg text-stroke text-[13px] sm:text-[14px] font-bold border-2 border-stroke rounded-full shadow-[2px_2px_0_#18181B] select-none hover:bg-secondary cursor-default"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        {/* View Case Study Button (flush left alignment, vertical-only hover shadow) */}
+        {/* View Case Study Button */}
         <button
           type="button"
           onClick={handleButtonClick}
-          className="bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm sm:text-base px-6 py-3.5 font-bold rounded-full border-[3px] border-black shadow-[4px_4px_0px_#000000] hover:shadow-[4px_6px_0px_#000000] hover:-translate-y-1 active:translate-y-0.5 active:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2 cursor-pointer select-none group/btn self-start m-0"
+          className="bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm sm:text-base px-6 py-3.5 font-bold rounded-full border-[3px] border-black shadow-[4px_4px_0px_#000000] hover:shadow-[4px_6px_0px_#000000] hover:-translate-y-1 active:translate-y-0.5 active:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2 cursor-pointer select-none group/btn self-start m-0 min-h-[44px]"
           aria-label={`View case study for ${proj.title}`}
         >
           <span>View Case Study ↗</span>
@@ -166,7 +190,7 @@ export default function Projects({ onOpenCaseStudy }) {
   return (
     <section
       id="work"
-      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-28"
+      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-[120px]"
       aria-label="Selected Projects"
     >
       {/* Section Header with Scroll Reveal */}
@@ -192,7 +216,7 @@ export default function Projects({ onOpenCaseStudy }) {
 
         {/* Muted Subtitle */}
         <p
-          className={`font-body text-muted text-lg sm:text-xl font-medium max-w-xl ${
+          className={`font-body text-[#3F3F46] text-lg sm:text-xl font-medium max-w-xl ${
             headerInView ? 'reveal-subtitle' : 'opacity-0'
           }`}
         >

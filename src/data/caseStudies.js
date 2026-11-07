@@ -1,5 +1,10 @@
 /**
  * Full Case Studies Data for Mrwan H. UI/UX Portfolio
+ *
+ * Empty fields are hidden on the page – fill them in when ready.
+ * gallery: array of { image, caption } – drives the "Process & Screens" grid.
+ * designSystem: array of { image, caption } – drives the "Design System" subsection.
+ * rtlShowcase: { heading, body } – Al-Masilah Arabic RTL sample (hidden when empty).
  */
 
 export const CASE_STUDIES = {
@@ -10,27 +15,29 @@ export const CASE_STUDIES = {
     figmaFile: 'wakandarides.fig',
     badge: 'Carpooling Platform',
     heroTag: 'Ride-Hailing & Carpooling • Canada • Freelance',
-    color: '#FF4800', // Vibrant Orange Neubrutalist Hero
+    // Hero card color from homepage (yellow)
+    color: '#FFD200',
+    heroTextColor: 'text-black',
     accentColor: '#3B82F6',
     secondaryColor: '#FFD200',
     summary:
       'A seamless end-to-end carpooling platform connecting verified drivers with everyday commuters across Canada, with instant seat booking, live GPS tracking, and trust-first verification.',
     metrics: [
       { label: 'Platform Screens', value: '70+', detail: 'iOS, Android & Web' },
-      { label: 'Booking Flow', value: '1 Flow', detail: 'Shared 3-step checkout' },
-      { label: 'Hand-off Speed', value: '2x', detail: 'Tokens & Component library' },
+      { label: 'Design System', value: 'Full', detail: 'Tokens, Grids & Variants' },
     ],
     mockupImage: '/wakanda.webp',
     mockupSrcSet: '/wakanda-640.webp 640w, /wakanda.webp 1024w',
     sidebar: {
-      role: 'Lead UI/UX & Design Systems Designer',
-      client: 'Wakanda Mobility (Canada)',
-      timeline: '3 Months (End-to-end delivery)',
+      role: 'UI/UX Designer',
+      scope: 'Lead UI/UX & Design Systems Designer',
+      client: '',
+      timeline: '',
       platform: 'Mobile App (iOS & Android) + Responsive Web',
       tools: ['Figma', 'FigJam', 'Photoshop', 'Illustrator'],
     },
     overview:
-      'Commuters in Canada face rising gas prices, congested highway corridors, and fragmented public transit options. WakandaRides was engineered from the ground up to make shared mobility feel as effortless and secure as calling a private cab. From identity verification to ride matching, live route sharing, and automated split fares, every touchpoint was optimized to reduce user anxiety and build peer-to-peer trust.',
+      'Commuters in Canada face rising gas prices, congested highway corridors, and fragmented public transit options. I engineered WakandaRides from the ground up to make shared mobility feel as effortless and secure as calling a private cab. From identity verification to ride matching, live route sharing, and automated split fares, I optimized every touchpoint to reduce user anxiety and build peer-to-peer trust.',
     problems: [
       {
         number: '01',
@@ -48,7 +55,7 @@ export const CASE_STUDIES = {
         number: '03',
         title: 'Friction in Payment Settlement',
         description:
-          'Cash handling caused post-ride awkwardness. We integrated seamless digital wallet escrow: funds are held securely at booking and released automatically upon arrival scan or geolocation completion.',
+          'Cash handling caused post-ride awkwardness. I integrated seamless digital wallet escrow: funds are held securely at booking and released automatically upon arrival scan or geolocation completion.',
       },
     ],
     deliverables: [
@@ -59,6 +66,12 @@ export const CASE_STUDIES = {
       'Design System (Tokens, Grids & Variants)',
       'Interactive Figma Micro-interaction Prototype',
     ],
+    // Process & Screens gallery – add { image: '/path.webp', caption: 'Description' }
+    gallery: [],
+    // Design System gallery – add { image: '/path.webp', caption: 'Description' }
+    designSystem: [],
+    // Arabic RTL showcase (not applicable for this project)
+    rtlShowcase: null,
     nextProject: {
       slug: 'flaride',
       title: 'FlaRide',
@@ -73,33 +86,36 @@ export const CASE_STUDIES = {
     figmaFile: 'flaride.fig',
     badge: 'Super App Platform',
     heroTag: 'Mobility & On-Demand Delivery • Africa • Freelance',
-    color: '#FF4800',
+    // Hero card color from homepage (blue)
+    color: '#2F5BFF',
+    heroTextColor: 'text-white',
     accentColor: '#3B82F6',
     secondaryColor: '#FFD200',
     summary:
       'An African super app unifying ride-hailing, food delivery, and parcel shipping into a single lightweight interface with zero app-switching friction and smart offline caching.',
     metrics: [
-      { label: 'Total UI Screens', value: '80+', detail: '3 service verticals' },
-      { label: 'Cognitive Load', value: '-35%', detail: 'Color-coded navigation' },
-      { label: 'Design System', value: '1 Unified', detail: 'Scalable across services' },
+      { label: 'Total UI Screens', value: '80+', detail: 'Across 3 service verticals' },
+      { label: 'Theme Modes', value: 'Light & Dark', detail: 'Full coverage' },
+      { label: 'Service Verticals', value: '3', detail: 'Rides, Food & Parcels' },
     ],
     mockupImage: '/flaride.webp',
     mockupSrcSet: '/flaride-640.webp 640w, /flaride.webp 1024w',
     sidebar: {
-      role: 'Product Designer & UX Strategist',
-      client: 'FlaRide Technologies',
-      timeline: '4 Months',
+      role: 'UI/UX Designer',
+      scope: 'Product Designer & UX Strategist',
+      client: '',
+      timeline: '',
       platform: 'Cross-platform Mobile App (Flutter handoff)',
-      tools: ['Figma', 'Notion', 'Photoshop', 'Claude AI (UX Synthesis)'],
+      tools: ['Figma', 'Notion', 'Photoshop'],
     },
     overview:
-      'In emerging African markets, smartphones frequently operate on constrained storage and patchy network connections. Instead of requiring users to download separate heavy apps for transportation, restaurant deliveries, and courier logistics, FlaRide consolidates all three into an ultra-fast, intuitive Super App. The core challenge was preventing visual clutter while enabling immediate cross-service discovery.',
+      'In emerging African markets, smartphones frequently operate on constrained storage and patchy network connections. Instead of requiring users to download separate heavy apps for transportation, restaurant deliveries, and courier logistics, I consolidated all three into an ultra-fast, intuitive Super App. The core challenge was preventing visual clutter while enabling immediate cross-service discovery.',
     problems: [
       {
         number: '01',
         title: 'App-Switching & Cognitive Fatigue',
         description:
-          'Users were overwhelmed by multiple unrelated actions on home screens. I invented a proprietary Color-Coded Navigation System (Green for mobility & parcel logistics, Warm Orange for food and mart delivery) that gives users an instant mental model of what mode they are operating in.',
+          'Users were overwhelmed by multiple unrelated actions on home screens. I designed a Color-Coded Navigation System (Green for mobility & parcel logistics, Warm Orange for food and mart delivery) that gives users an instant mental model of what mode they are operating in.',
       },
       {
         number: '02',
@@ -122,6 +138,9 @@ export const CASE_STUDIES = {
       'Reusable Atomic Figma Component Library',
       'Handoff Specifications for Engineering Team',
     ],
+    gallery: [],
+    designSystem: [],
+    rtlShowcase: null,
     nextProject: {
       slug: 'almasilah',
       title: 'Al-Masilah',
@@ -136,27 +155,29 @@ export const CASE_STUDIES = {
     figmaFile: 'almasilah.fig',
     badge: 'Arabic RTL Corporate Web',
     heroTag: 'Corporate Web Experience • Kuwait • Remote Delivery',
-    color: '#FF4800',
+    // Hero card color from homepage (lavender)
+    color: '#E9E4FF',
+    heroTextColor: 'text-black',
     accentColor: '#3B82F6',
     secondaryColor: '#FFD200',
     summary:
-      'A prestigious corporate digital platform for Kuwait’s leading elevator and architectural mobility company, engineered from the ground up in native Right-to-Left (RTL) Arabic typography and layout hierarchy.',
+      'A prestigious corporate digital platform for Kuwait\u2019s leading elevator and architectural mobility company, engineered from the ground up in native Right-to-Left (RTL) Arabic typography and layout hierarchy.',
     metrics: [
-      { label: 'Responsive Pages', value: '4 Key Pages', detail: 'Desktop + Tablet + Mobile' },
-      { label: 'Client Feedback', value: '0 Revisions', detail: 'Approved on first delivery' },
-      { label: 'RTL Alignment', value: '100%', detail: 'Natural Arabic reading flow' },
+      { label: 'Layout Direction', value: 'Arabic RTL', detail: 'Natural Arabic reading flow' },
+      { label: 'Responsive Range', value: '1920 \u2013 360px', detail: 'Desktop, Tablet & Mobile' },
     ],
     mockupImage: '/almasilah.webp',
     mockupSrcSet: '/almasilah-640.webp 640w, /almasilah.webp 1024w',
     sidebar: {
-      role: 'Lead Web Designer & Visual Architect',
-      client: 'Al-Maseela Elevators Co. (Kuwait)',
-      timeline: '1 Month',
+      role: 'UI/UX Designer',
+      scope: 'Lead Web Designer & Visual Architect',
+      client: '',
+      timeline: '',
       platform: 'Responsive Web (Desktop & Mobile)',
       tools: ['Figma', 'Illustrator', 'Space Grotesk & Arabic Typography'],
     },
     overview:
-      'Al-Maseela Company represents luxury elevator installations and heavy engineering in Kuwait and the Gulf region. The existing web presence lacked modern credibility, visual hierarchy, and failed to represent their prestigious architectural portfolio. The client needed an authoritative, high-converting digital storefront completed with zero friction and perfect Arabic RTL nuance.',
+      'Al-Masilah represents luxury elevator installations and heavy engineering in Kuwait and the Gulf region. The existing web presence lacked modern credibility, visual hierarchy, and failed to represent their prestigious architectural portfolio. I needed to deliver an authoritative, high-converting digital storefront with perfect Arabic RTL nuance.',
     problems: [
       {
         number: '01',
@@ -182,8 +203,15 @@ export const CASE_STUDIES = {
       'High-Conversion B2B Quotation Funnel',
       'Responsive Breakpoints (1920px to 360px)',
       'Design Token Specifications',
-      'Final Production Figma Library with Zero Scope Creep',
+      'Final Production Figma Library',
     ],
+    gallery: [],
+    designSystem: [],
+    // Arabic RTL Showcase – set heading and body to show the section
+    rtlShowcase: {
+      heading: '\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u0633\u064A\u0644\u0629 \u0644\u0644\u0645\u0635\u0627\u0639\u062F',
+      body: '\u0646\u0635\u0645\u0651\u0645 \u0648\u0646\u064F\u0646\u0641\u0651\u0630 \u0623\u0641\u062E\u0645 \u0627\u0644\u0645\u0635\u0627\u0639\u062F \u0627\u0644\u0645\u0639\u0645\u0627\u0631\u064A\u0629 \u0641\u064A \u0627\u0644\u0643\u0648\u064A\u062A \u0648\u0627\u0644\u062E\u0644\u064A\u062C \u2014 \u0628\u062F\u0642\u0651\u0629 \u0647\u0646\u062F\u0633\u064A\u0629 \u0648\u0644\u0645\u0633\u0629 \u0641\u0627\u062E\u0631\u0629.',
+    },
     nextProject: {
       slug: 'wakandarides',
       title: 'WakandaRides',

@@ -41,7 +41,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-28 relative"
+      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-[120px] relative"
       aria-label="Services and Capabilities"
     >
       {/* Section Header with Hand-Drawn Arrow Sticker & Scroll Reveal */}

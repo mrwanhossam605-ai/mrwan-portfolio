@@ -14,10 +14,10 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 pt-[120px] sm:pt-[135px] lg:pt-[150px] pb-16 sm:pb-24 scroll-mt-28"
+      className="relative w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 pt-[92px] sm:pt-[115px] lg:pt-[140px] pb-16 sm:pb-24 scroll-mt-28"
       aria-label="Hero Section"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
         {/* =========================================
             LEFT COLUMN: Headline, Badges, Bio, CTAs
            ========================================= */}
@@ -82,9 +82,9 @@ export default function Hero() {
         {/* =========================================
             RIGHT COLUMN: Card & Cute Floating Stickers
            ========================================= */}
-        <div className="lg:col-span-5 flex justify-center items-center relative mt-6 lg:mt-0">
+        <div className="lg:col-span-5 flex justify-center items-center relative mt-0 lg:mt-0">
           {/* Outer Relative Wrap with boundary for floating stickers */}
-          <div className="relative w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[420px] mx-auto py-6">
+          <div className="relative w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[420px] mx-auto py-0 sm:py-6">
             
             {/* Sticker 1: Starburst (Overlaps only the card's top-right corner, safely below navbar) */}
             <div className="absolute top-2 -right-4 sm:top-2 sm:-right-6 z-20">
@@ -125,6 +125,9 @@ export default function Hero() {
 
                 {/* Portrait Image or Illustration Fallback */}
                 <div className="relative w-full flex-1 flex items-center justify-center p-2 overflow-hidden">
+                  {/* Flat yellow #FFD200 background block behind portrait */}
+                  <div className="absolute inset-2 bg-[#FFD200] rounded-lg border-2 border-stroke" aria-hidden="true" />
+
                   {!imgError ? (
                     <img
                       src="/profile.webp"
@@ -135,7 +138,7 @@ export default function Hero() {
                       fetchPriority="high"
                       alt="Mrwan H. - UI/UX Designer in Cairo"
                       onError={() => setImgError(true)}
-                      className="w-full h-full object-cover object-top rounded-lg filter contrast-[1.03]"
+                      className="relative z-10 w-full h-full object-cover object-[center_18%] scale-110 rounded-lg filter contrast-[1.03]"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-center p-4">

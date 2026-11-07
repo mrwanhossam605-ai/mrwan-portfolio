@@ -52,6 +52,20 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // Smooth scroll to hash target on home route
+  useEffect(() => {
+    if (currentRoute.type === 'home' && typeof window !== 'undefined' && window.location.hash) {
+      const id = window.location.hash.replace('#', '');
+      const timer = setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [currentRoute]);
+
   // Trigger Case Study Loading Screen Transition
   const handleOpenCaseStudy = useCallback((slug) => {
     const study = CASE_STUDIES[slug] || CASE_STUDIES.wakandarides;

@@ -72,10 +72,11 @@ export default function About() {
       tilt: 'rotate-2',
     },
     {
-      emoji: '🎨',
-      value: 1,
+      emoji: '🌐',
+      value: 'EN + AR',
+      isText: true,
       suffix: '',
-      label: 'Full Design System per project',
+      label: 'Bilingual design (LTR & RTL)',
       bg: 'bg-card-bg text-stroke',
       tilt: '-rotate-2',
     },
@@ -84,7 +85,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-28"
+      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-[120px]"
       aria-label="About Me"
     >
       {/* Header with Scroll Reveal */}

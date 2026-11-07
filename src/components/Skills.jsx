@@ -50,7 +50,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-28"
+      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-[120px]"
       aria-label="Skills & Tools"
     >
       {/* Header with Scroll Reveal */}

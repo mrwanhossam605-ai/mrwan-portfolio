@@ -1,13 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Copy, Check } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
-import { EMAIL, LINKEDIN_URL, BEHANCE_URL, CV_PATH } from '../config';
+import { EMAIL, LINKEDIN_URL, BEHANCE_URL, CV_PATH, WHATSAPP_URL } from '../config';
 
 export default function Footer() {
   const [wordmarkRef, wordmarkInView] = useInView({ threshold: 0.15 });
   const containerRef = useRef(null);
   const measureRef = useRef(null);
   const [fontSize, setFontSize] = useState(120);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(EMAIL);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = EMAIL;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -102,6 +120,31 @@ export default function Footer() {
               <span>Cairo, Egypt</span>
               <span>📍</span>
             </div>
+
+            {/* Plain visible email with Copy email button */}
+            <div className="flex flex-wrap items-center gap-2.5 mt-2 pt-3 border-t border-[#F8F6FF]/15">
+              <span className="font-mono text-xs sm:text-sm text-[#F8F6FF] select-all font-bold">
+                {EMAIL}
+              </span>
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                className="px-2.5 py-1 bg-[#27272A] hover:bg-secondary hover:text-stroke text-xs font-bold border border-[#3F3F46] rounded-md transition-all cursor-pointer flex items-center gap-1.5 text-[#F8F6FF]"
+                aria-label="Copy email address"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[3]" />
+                    <span className="text-[#10B981]">Copied ✓</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy email</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Right Column: Links + Back to top button */}
@@ -113,11 +156,21 @@ export default function Footer() {
               </span>
               <div className="flex flex-col items-start gap-2 text-sm sm:text-base">
                 <a
-                  href={`mailto:${EMAIL}?subject=Hello%20Mrwan`}
+                  href={`mailto:${EMAIL}?subject=Project%20inquiry%20from%20your%20portfolio`}
                   className="underline underline-offset-4 text-[#F8F6FF] hover:text-secondary hover:translate-x-1 transition-all duration-200"
                 >
                   Email
                 </a>
+                {WHATSAPP_URL && (
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 text-[#F8F6FF] hover:text-secondary hover:translate-x-1 transition-all duration-200"
+                  >
+                    WhatsApp
+                  </a>
+                )}
                 <a
                   href={LINKEDIN_URL}
                   target="_blank"

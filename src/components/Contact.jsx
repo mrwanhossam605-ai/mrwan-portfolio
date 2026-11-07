@@ -1,8 +1,8 @@
-import React from 'react';
-import { Mail, Download, ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Download, ArrowUpRight, Copy, Check } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 import { StarburstSticker, SmileySticker } from './Stickers';
-import { EMAIL, LINKEDIN_URL, BEHANCE_URL, CV_PATH } from '../config';
+import { EMAIL, LINKEDIN_URL, BEHANCE_URL, CV_PATH, WHATSAPP_URL } from '../config';
 
 function LinkedinIcon({ className = 'w-5 h-5' }) {
   return (
@@ -20,13 +20,39 @@ function BehanceIcon({ className = 'w-5 h-5' }) {
   );
 }
 
+function WhatsAppIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.196 8.196 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.64c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.17 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.07-.12-.23-.19-.48-.32" />
+    </svg>
+  );
+}
+
 export default function Contact() {
   const [cardRef, cardInView] = useInView({ threshold: 0.2 });
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(EMAIL);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = EMAIL;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
 
   return (
     <section
       id="contact"
-      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-28 relative"
+      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-[120px] relative"
       aria-label="Contact Section"
     >
       {/* Outer Wrapper with room for floating stickers */}
@@ -113,20 +139,33 @@ export default function Contact() {
           </h2>
 
           {/* Subtitle */}
-          <p className="font-body text-stroke/85 text-lg sm:text-xl font-medium max-w-xl mx-auto mb-10">
+          <p className="font-body text-stroke/85 text-lg sm:text-xl font-medium max-w-xl mx-auto mb-8">
             Have a project in mind? I'd love to hear about it.
           </p>
 
           {/* Action Pill Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 mb-6">
             {/* Email me */}
             <a
-              href={`mailto:${EMAIL}?subject=Project%20Inquiry%20-%20Let's%20Work%20Together`}
+              href={`mailto:${EMAIL}?subject=Project%20inquiry%20from%20your%20portfolio`}
               className="neo-btn bg-primary text-white text-base sm:text-lg px-7 py-3.5 sm:px-8 sm:py-4 font-extrabold w-full sm:w-auto"
             >
               <Mail className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
               <span>Email me</span>
             </a>
+
+            {/* WhatsApp – visible with real WhatsApp URL */}
+            {WHATSAPP_URL && (
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="neo-btn bg-[#25D366] text-black border-3 border-black text-base sm:text-lg px-7 py-3.5 sm:px-8 sm:py-4 font-extrabold hover:bg-[#20ba5a] w-full sm:w-auto"
+              >
+                <WhatsAppIcon className="w-5 h-5" />
+                <span>WhatsApp</span>
+              </a>
+            )}
 
             {/* LinkedIn */}
             <a
@@ -152,6 +191,34 @@ export default function Contact() {
               <ArrowUpRight className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
             </a>
           </div>
+
+          {/* Plain visible email text with Copy email button */}
+          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 bg-card-bg border-3 border-stroke rounded-full px-5 py-2.5 shadow-neo mb-4 select-none">
+            <span className="font-mono font-bold text-sm sm:text-base text-stroke select-all">
+              {EMAIL}
+            </span>
+            <button
+              type="button"
+              onClick={handleCopyEmail}
+              className="px-3.5 py-1.5 bg-page-bg hover:bg-secondary text-stroke text-xs sm:text-sm font-bold border-2 border-stroke rounded-full shadow-[2px_2px_0_#18181B] active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer flex items-center gap-1.5"
+              aria-label="Copy email address"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[3]" />
+                  <span className="text-[#10B981] font-extrabold">Copied ✓</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>Copy email</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Reply time note */}
+          <p className="text-sm text-stroke/70 font-medium mb-8">Usually reply within 24 hours</p>
 
           {/* Also: Download CV button */}
           <div className="pt-6 border-t-2 border-stroke/20 flex justify-center">
