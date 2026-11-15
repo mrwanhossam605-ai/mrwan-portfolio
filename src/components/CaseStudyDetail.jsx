@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle, Layers, X } from 'lucide-react';
-import { CASE_STUDIES } from '../data/caseStudies';
+import { Target, AlertTriangle, Lightbulb, CheckCircle2, CheckCircle, ArrowRight, X } from 'lucide-react';
+import { CASE_STUDIES } from '../caseStudies';
+import { EMAIL, WHATSAPP_URL } from '../config';
 
 /* ================================================================
    LIGHTBOX: Simple fullscreen image viewer (Escape to close)
@@ -29,7 +30,7 @@ function Lightbox({ src, alt, onClose }) {
       <button
         type="button"
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-white border-[3px] border-black shadow-[3px_3px_0px_#000000] flex items-center justify-center text-black hover:bg-[#FFD200] transition-colors cursor-pointer"
+        className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-white border-[3px] border-[#18181B] shadow-[3px_3px_0px_#18181B] flex items-center justify-center text-[#18181B] hover:bg-[#FFD200] transition-colors cursor-pointer"
         aria-label="Close lightbox"
       >
         <X className="w-5 h-5 stroke-[3]" />
@@ -37,7 +38,7 @@ function Lightbox({ src, alt, onClose }) {
       <img
         src={src}
         alt={alt}
-        className="max-w-full max-h-[90vh] object-contain rounded-[18px] border-[3px] border-black shadow-[8px_8px_0px_#000000]"
+        className="max-w-full max-h-[90vh] object-contain rounded-[18px] border-[3px] border-[#18181B] shadow-[8px_8px_0px_#18181B]"
         onClick={(e) => e.stopPropagation()}
       />
     </div>
@@ -45,7 +46,25 @@ function Lightbox({ src, alt, onClose }) {
 }
 
 /* ================================================================
-   MAIN COMPONENT
+   HELPER: Section Icon Resolver
+   ================================================================ */
+function renderSectionIcon(iconName) {
+  switch (iconName) {
+    case 'Target':
+      return <Target className="w-6 h-6 text-[#2F5BFF] stroke-[2.5]" />;
+    case 'AlertTriangle':
+      return <AlertTriangle className="w-6 h-6 text-[#2F5BFF] stroke-[2.5]" />;
+    case 'Lightbulb':
+      return <Lightbulb className="w-6 h-6 text-[#2F5BFF] stroke-[2.5]" />;
+    case 'CheckCircle2':
+      return <CheckCircle2 className="w-6 h-6 text-[#2F5BFF] stroke-[2.5]" />;
+    default:
+      return <Target className="w-6 h-6 text-[#2F5BFF] stroke-[2.5]" />;
+  }
+}
+
+/* ================================================================
+   MAIN CASE STUDY DETAIL COMPONENT
    ================================================================ */
 export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
   const caseStudy = CASE_STUDIES[slug] || CASE_STUDIES.wakandarides;
@@ -63,420 +82,386 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
     }
   };
 
-  // Determine hero text color class
-  const heroText = caseStudy.heroTextColor || 'text-white';
-  const isHeroDark = heroText === 'text-black';
+  // Check if meta has at least one non-empty value
+  const hasMeta = Boolean(
+    caseStudy.meta &&
+      (caseStudy.meta.client ||
+        caseStudy.meta.role ||
+        caseStudy.meta.timeline ||
+        caseStudy.meta.platform ||
+        caseStudy.meta.scope)
+  );
 
   return (
-    <article className="min-h-screen bg-page-bg text-black pb-24 selection:bg-secondary selection:text-black">
-      {/* Lightbox */}
+    <article className="min-h-screen bg-page-bg text-[#18181B] pb-24 selection:bg-secondary selection:text-[#18181B]">
+      {/* Lightbox modal */}
       {lightboxImg && (
         <Lightbox src={lightboxImg.src} alt={lightboxImg.alt} onClose={closeLightbox} />
       )}
 
-      {/* ── Sticky Header ── solid bg, no blur ── */}
+      {/* ════════════════════════════════════════════════════
+          1. TOP BAR: solid #F8F6FF background, 3px bottom border, no blur
+         ════════════════════════════════════════════════════ */}
       <header
-        className="sticky top-0 z-30 bg-[#F8F6FF] border-b-[3px] border-black py-4 px-4 sm:px-6 lg:px-8"
+        className="sticky top-0 z-30 bg-[#F8F6FF] border-b-[3px] border-[#18181B] py-3.5 px-4 sm:px-6 lg:px-8"
         style={{ backgroundColor: '#F8F6FF', backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
       >
-        <div className="max-w-container mx-auto flex items-center justify-between">
-          {/* Back button – single arrow */}
+        <div className="max-w-container mx-auto flex items-center justify-between gap-4">
+          {/* Back button: single arrow "← Selected work" */}
           <button
             type="button"
             onClick={onBack}
-            className="neo-btn bg-white text-black font-body font-extrabold text-sm sm:text-base px-5 py-2.5 rounded-full border-[3px] border-black shadow-[3px_3px_0px_#000000] hover:bg-[#FFD200] hover:shadow-[5px_5px_0px_#000000] active:translate-x-0.5 active:translate-y-0.5 transition-all flex items-center justify-center cursor-pointer select-none min-h-[44px]"
+            className="neo-btn bg-white text-[#18181B] font-body font-extrabold text-sm sm:text-base px-5 py-2.5 rounded-full border-[3px] border-[#18181B] shadow-[3px_3px_0px_#18181B] hover:bg-[#FFD200] hover:shadow-[5px_5px_0px_#18181B] active:translate-x-0.5 active:translate-y-0.5 transition-all flex items-center justify-center cursor-pointer select-none min-h-[44px]"
             aria-label="Return to portfolio selected work"
           >
             <span>← Selected work</span>
           </button>
 
-          {/* Project Title Badge */}
-          <div className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 bg-[#FFD200] border-[2px] border-black rounded-full shadow-[2px_2px_0px_#000000] text-xs font-mono font-bold select-none">
+          {/* Project Title Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 bg-[#FFD200] border-2 border-[#18181B] rounded-full shadow-[2px_2px_0px_#18181B] text-xs font-mono font-bold text-[#18181B] select-none truncate max-w-[220px] sm:max-w-none">
             <span>✦</span>
-            <span>Case Study</span>
-            <span>·</span>
-            <span>{caseStudy.title}</span>
+            <span>Case Study · {caseStudy.title}</span>
           </div>
         </div>
       </header>
 
-      {/* Main Container */}
-      <main className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 flex flex-col gap-6 lg:gap-16">
+      {/* Main Content Container */}
+      <main className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 flex flex-col gap-10 sm:gap-14">
 
         {/* ════════════════════════════════════════════════════
-            HERO CARD BANNER – per-project color
+            2. HERO (Two columns on desktop, stacked on mobile)
            ════════════════════════════════════════════════════ */}
         <section
-          className={`relative w-full ${heroText} border-[3px] border-black rounded-[28px] sm:rounded-[36px] shadow-[8px_8px_0px_#000000] p-6 sm:p-10 md:p-14 overflow-hidden`}
-          style={{ backgroundColor: caseStudy.color }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
           aria-label={`${caseStudy.title} overview`}
         >
-          {/* Decorative starburst */}
-          <div
-            className="absolute -top-8 -right-8 w-36 h-36 bg-[#FFD200] border-[3px] border-black rounded-full rotate-12 opacity-95 pointer-events-none hidden sm:flex items-center justify-center text-4xl"
-            aria-hidden="true"
-          >
-            ✦
-          </div>
+          {/* LEFT: Hero Tag, Title, Summary, Meta Row, Action Buttons */}
+          <div className="lg:col-span-7 flex flex-col items-start gap-5 sm:gap-6">
+            {caseStudy.heroTag && (
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFD200] border-2 border-[#18181B] rounded-full text-xs font-mono font-extrabold text-[#18181B] shadow-[2px_2px_0px_#18181B] select-none">
+                <span>✦</span>
+                <span>{caseStudy.heroTag}</span>
+              </div>
+            )}
 
-          <div className="relative z-10 max-w-4xl lg:max-w-5xl flex flex-col items-start gap-4 sm:gap-6">
-            {/* Subtitle Tags */}
-            <div
-              className={`inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 border-2 border-black rounded-full text-xs sm:text-sm font-mono font-extrabold shadow-[3px_3px_0px_${isHeroDark ? '#000000' : '#FFFFFF'}] select-none ${
-                isHeroDark
-                  ? 'bg-black text-[#FFD200]'
-                  : 'bg-black text-[#FFD200]'
-              }`}
-            >
-              <span>✦</span>
-              <span>{caseStudy.heroTag}</span>
-            </div>
-
-            {/* Bold Headline */}
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.08] tracking-tight drop-shadow-sm">
+            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl xl:text-[64px] text-[#18181B] tracking-tight leading-[1.08]">
               {caseStudy.title}
             </h1>
 
-            {/* Description Summary */}
-            <p className={`font-body text-lg sm:text-xl md:text-2xl leading-relaxed font-medium ${isHeroDark ? 'text-black/90' : 'text-white/95'}`}>
-              {caseStudy.summary}
-            </p>
+            {caseStudy.summary && (
+              <p className="font-body text-base sm:text-lg text-[#52525B] font-medium leading-relaxed max-w-2xl">
+                {caseStudy.summary}
+              </p>
+            )}
 
-            {/* Metrics Grid */}
-            {caseStudy.metrics.length > 0 && (
-              <div className={`w-full grid grid-cols-1 ${caseStudy.metrics.length >= 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-3 sm:gap-4 lg:gap-5 pt-4 sm:pt-6`}>
-                {caseStudy.metrics.map((metric, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white text-black border-[3px] border-black rounded-[20px] p-4 sm:p-5 lg:p-6 shadow-[4px_4px_0px_#000000] flex flex-col justify-between overflow-hidden min-w-0 flex-1"
-                  >
-                    <span
-                      style={{ textWrap: 'balance' }}
-                      className="font-heading font-extrabold text-2xl md:text-3xl xl:text-4xl text-[#3B82F6] tracking-tight leading-none break-words"
-                    >
-                      {metric.value}
+            {/* Meta Row: Only render pairs where value is non-empty */}
+            {hasMeta && (
+              <div className="w-full flex flex-wrap gap-4 sm:gap-6 py-4 border-y-2 border-[#18181B]/15">
+                {caseStudy.meta.client && (
+                  <div className="min-w-[100px]">
+                    <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-0.5">
+                      Client
                     </span>
-                    <div className="mt-3">
-                      <span
-                        style={{ textWrap: 'balance' }}
-                        className="block font-heading font-extrabold text-sm sm:text-base text-black leading-snug break-words"
-                      >
-                        {metric.label}
-                      </span>
-                      {metric.detail && (
-                        <span className="block font-mono text-xs font-bold text-[#52525B] mt-1 leading-snug break-words">
-                          {metric.detail}
-                        </span>
-                      )}
-                    </div>
+                    <span className="font-body font-bold text-sm sm:text-base text-[#18181B]">
+                      {caseStudy.meta.client}
+                    </span>
                   </div>
-                ))}
+                )}
+                {caseStudy.meta.role && (
+                  <div className="min-w-[100px]">
+                    <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-0.5">
+                      Role
+                    </span>
+                    <span className="font-body font-bold text-sm sm:text-base text-[#18181B]">
+                      {caseStudy.meta.role}
+                    </span>
+                  </div>
+                )}
+                {caseStudy.meta.timeline && (
+                  <div className="min-w-[100px]">
+                    <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-0.5">
+                      Timeline
+                    </span>
+                    <span className="font-body font-bold text-sm sm:text-base text-[#18181B]">
+                      {caseStudy.meta.timeline}
+                    </span>
+                  </div>
+                )}
+                {caseStudy.meta.platform && (
+                  <div className="min-w-[100px]">
+                    <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-0.5">
+                      Platform
+                    </span>
+                    <span className="font-body font-bold text-sm sm:text-base text-[#18181B]">
+                      {caseStudy.meta.platform}
+                    </span>
+                  </div>
+                )}
+                {caseStudy.meta.scope && (
+                  <div className="min-w-[100px]">
+                    <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-0.5">
+                      Scope
+                    </span>
+                    <span className="font-body font-bold text-sm sm:text-base text-[#18181B]">
+                      {caseStudy.meta.scope}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Action Buttons: Behance & Live site (only shown if URLs exist) */}
+            {(caseStudy.behanceUrl || caseStudy.liveUrl) && (
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
+                {caseStudy.behanceUrl && (
+                  <a
+                    href={caseStudy.behanceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="neo-btn bg-[#2F5BFF] text-white px-6 py-3 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] min-h-[44px]"
+                  >
+                    <span>View on Behance</span>
+                    <span>↗</span>
+                  </a>
+                )}
+                {caseStudy.liveUrl && (
+                  <a
+                    href={caseStudy.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="neo-btn bg-white text-[#18181B] px-6 py-3 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] min-h-[44px]"
+                  >
+                    <span>Live site</span>
+                    <span>↗</span>
+                  </a>
+                )}
               </div>
             )}
           </div>
-        </section>
 
-        {/* ════════════════════════════════════════════════════
-            VISUAL SHOWCASE: Main Mockup
-           ════════════════════════════════════════════════════ */}
-        <section className="flex flex-col gap-6" aria-label="Visual showcase">
-          <div className="flex items-center gap-3">
-            <span className="px-3.5 py-1.5 bg-[#FFD200] border-[3px] border-black rounded-full shadow-[3px_3px_0px_#000000] text-xs font-mono font-extrabold">
-              01 · VISUAL SHOWCASE
-            </span>
-            <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-black">
-              Production Interface
-            </h2>
-          </div>
-
-          <div className="w-full bg-white border-[3px] border-black rounded-[24px] sm:rounded-[32px] shadow-[8px_8px_0px_#000000] p-4 sm:p-8 overflow-hidden flex items-center justify-center group">
-            <div className="w-full aspect-[16/10] bg-[#F1EEFC] border-2 border-black rounded-[18px] overflow-hidden flex items-center justify-center relative shadow-inner">
-              <img
-                src={caseStudy.mockupImage}
-                srcSet={caseStudy.mockupSrcSet}
-                sizes="(max-width: 1024px) 100vw, 1200px"
-                alt={`${caseStudy.title} high fidelity interface showcase`}
-                className="w-full h-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-300"
-                loading="eager"
-              />
-              <div className="absolute bottom-4 right-4 px-3 py-1 bg-white border-2 border-black rounded-full text-xs font-mono font-bold text-black shadow-[2px_2px_0px_#000000]">
-                {caseStudy.title} · Final design
+          {/* RIGHT: Main Mockup in thick-bordered frame with project color background */}
+          <div className="lg:col-span-5 flex justify-center items-center">
+            <div
+              className="w-full border-[3px] border-[#18181B] rounded-[28px] sm:rounded-[36px] shadow-[8px_8px_0px_#18181B] p-4 sm:p-6 lg:p-8 overflow-hidden flex items-center justify-center"
+              style={{ backgroundColor: caseStudy.color }}
+            >
+              <div className="w-full aspect-[16/10] bg-white/40 border-2 border-[#18181B] rounded-[18px] overflow-hidden flex items-center justify-center relative shadow-inner">
+                <img
+                  src={caseStudy.mockupImage}
+                  srcSet={caseStudy.mockupSrcSet}
+                  sizes="(max-width: 1024px) 100vw, 600px"
+                  alt={`${caseStudy.title} interface showcase`}
+                  className="w-full h-full object-cover object-center"
+                  loading="eager"
+                />
               </div>
             </div>
           </div>
         </section>
 
         {/* ════════════════════════════════════════════════════
-            PROCESS & SCREENS GALLERY (hidden when empty)
+            3. NUMBERED SECTIONS (The Goal, The Challenge, My Solution, The Result)
            ════════════════════════════════════════════════════ */}
-        {caseStudy.gallery && caseStudy.gallery.length > 0 && (
-          <section className="flex flex-col gap-6" aria-label="Process and screens gallery">
-            <div className="flex items-center gap-3">
-              <span className="px-3.5 py-1.5 bg-[#FFD200] border-[3px] border-black rounded-full shadow-[3px_3px_0px_#000000] text-xs font-mono font-extrabold">
-                02 · PROCESS
-              </span>
-              <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-black">
-                Process & Screens
-              </h2>
-            </div>
+        {caseStudy.sections &&
+          caseStudy.sections.map((section, idx) => {
+            const isChallenge = section.title.toLowerCase().includes('challenge');
+            const isResult = section.title.toLowerCase().includes('result');
+            const hasText = Boolean(section.text && section.text.trim() !== '');
+            const hasImages = Boolean(section.images && section.images.length > 0);
+            const hasProblems = Boolean(isChallenge && caseStudy.problems && caseStudy.problems.length > 0);
+            const hasDeliverables = Boolean(isResult && caseStudy.deliverables && caseStudy.deliverables.length > 0);
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {caseStudy.gallery.map((item, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setLightboxImg({ src: item.image, alt: item.caption || `${caseStudy.title} process screen ${idx + 1}` })}
-                  className="group/gal bg-white border-[3px] border-black rounded-[20px] shadow-[5px_5px_0px_#000000] hover:shadow-[7px_7px_0px_#000000] hover:-translate-y-0.5 transition-all overflow-hidden cursor-zoom-in"
-                >
-                  <div className="w-full aspect-[16/10] overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.caption || `${caseStudy.title} screen ${idx + 1}`}
-                      className="w-full h-full object-cover object-center group-hover/gal:scale-[1.03] transition-transform duration-300"
-                      loading="lazy"
-                    />
-                  </div>
-                  {item.caption && (
-                    <div className="px-4 py-3 border-t-[3px] border-black">
-                      <span className="font-body font-bold text-sm text-black">{item.caption}</span>
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
+            // Hide any empty section: no text, no images, and no sub-components
+            if (!hasText && !hasImages && !hasProblems && !hasDeliverables) {
+              return null;
+            }
 
-        {/* ════════════════════════════════════════════════════
-            DESIGN SYSTEM SUBSECTION (hidden when empty)
-           ════════════════════════════════════════════════════ */}
-        {caseStudy.designSystem && caseStudy.designSystem.length > 0 && (
-          <section className="flex flex-col gap-6" aria-label="Design system showcase">
-            <div className="flex items-center gap-3">
-              <span className="px-3.5 py-1.5 bg-[#3B82F6] text-white border-[3px] border-black rounded-full shadow-[3px_3px_0px_#000000] text-xs font-mono font-extrabold">
-                SYSTEM
-              </span>
-              <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-black">
-                Design System
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {caseStudy.designSystem.map((item, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setLightboxImg({ src: item.image, alt: item.caption || `Design system ${idx + 1}` })}
-                  className="group/ds bg-white border-[3px] border-black rounded-[20px] shadow-[5px_5px_0px_#000000] hover:shadow-[7px_7px_0px_#000000] hover:-translate-y-0.5 transition-all overflow-hidden cursor-zoom-in"
-                >
-                  <div className="w-full aspect-[16/10] overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.caption || `Design system asset ${idx + 1}`}
-                      className="w-full h-full object-cover object-center group-hover/ds:scale-[1.03] transition-transform duration-300"
-                      loading="lazy"
-                    />
-                  </div>
-                  {item.caption && (
-                    <div className="px-4 py-3 border-t-[3px] border-black">
-                      <span className="font-body font-bold text-sm text-black">{item.caption}</span>
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ════════════════════════════════════════════════════
-            ARABIC RTL SHOWCASE (Al-Masilah only, hidden when null/empty)
-           ════════════════════════════════════════════════════ */}
-        {caseStudy.rtlShowcase && caseStudy.rtlShowcase.heading && (
-          <section className="flex flex-col gap-6" aria-label="Arabic RTL showcase">
-            <div className="flex items-center gap-3">
-              <span className="px-3.5 py-1.5 bg-[#E9E4FF] border-[3px] border-black rounded-full shadow-[3px_3px_0px_#000000] text-xs font-mono font-extrabold text-black">
-                RTL
-              </span>
-              <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-black">
-                Arabic RTL Showcase
-              </h2>
-            </div>
-
-            <div className="bg-white border-[3px] border-black rounded-[24px] shadow-[6px_6px_0px_#000000] p-6 sm:p-10 overflow-hidden" dir="rtl">
-              <h3
-                className="font-extrabold text-3xl sm:text-4xl md:text-5xl text-black tracking-tight leading-tight mb-4"
-                style={{ fontFamily: "'Cairo', 'Noto Sans Arabic', sans-serif" }}
+            return (
+              <section
+                key={section.number || idx}
+                className="bg-white border-[3px] border-[#18181B] rounded-[28px] shadow-[8px_8px_0px_#18181B] p-6 sm:p-10 relative overflow-hidden flex flex-col gap-6"
+                aria-label={`${section.title} section`}
               >
-                {caseStudy.rtlShowcase.heading}
-              </h3>
-              <p
-                className="text-lg sm:text-xl text-black/80 font-medium leading-relaxed"
-                style={{ fontFamily: "'Cairo', 'Noto Sans Arabic', sans-serif" }}
-              >
-                {caseStudy.rtlShowcase.body}
-              </p>
-            </div>
-          </section>
-        )}
-
-        {/* ════════════════════════════════════════════════════
-            OVERVIEW & PROBLEM BREAKDOWN (Two Columns Desktop, Single Column Mobile)
-           ════════════════════════════════════════════════════ */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start" aria-label="Project details and problem solving">
-
-          {/* Left Sidebar: Metadata Card - strictly static below 1024px, sticky on desktop */}
-          <aside className="case-study-specs static lg:sticky lg:top-28 lg:col-span-4 bg-white border-[3px] border-black rounded-[24px] shadow-[6px_6px_0px_#000000] p-6 sm:p-8 flex flex-col gap-6">
-            <div className="border-b-2 border-black pb-4">
-              <span className="font-heading font-extrabold text-lg text-black">
-                Project Specs
-              </span>
-            </div>
-
-            <div className="flex flex-col gap-5 text-sm">
-              <div>
-                <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-1">
-                  Role
-                </span>
-                <span className="font-heading font-extrabold text-base text-black">
-                  {caseStudy.sidebar.role}
-                </span>
-              </div>
-
-              {/* Scope (longer title) */}
-              {caseStudy.sidebar.scope && (
-                <div>
-                  <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-1">
-                    Scope
-                  </span>
-                  <span className="font-body font-bold text-base text-black">
-                    {caseStudy.sidebar.scope}
-                  </span>
+                {/* Round Number Badge in top-right corner */}
+                <div className="absolute top-6 right-6 sm:top-8 sm:right-8 w-12 h-12 rounded-full bg-[#FFD200] border-[3px] border-[#18181B] shadow-[3px_3px_0px_#18181B] flex items-center justify-center font-heading font-extrabold text-lg text-[#18181B] select-none">
+                  {section.number}
                 </div>
-              )}
 
-              {/* Client – only render if value exists */}
-              {caseStudy.sidebar.client && (
-                <div>
-                  <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-1">
-                    Client
-                  </span>
-                  <span className="font-body font-bold text-base text-black">
-                    {caseStudy.sidebar.client}
-                  </span>
-                </div>
-              )}
-
-              {/* Timeline – only render if value exists */}
-              {caseStudy.sidebar.timeline && (
-                <div>
-                  <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-1">
-                    Timeline
-                  </span>
-                  <span className="font-body font-bold text-base text-black">
-                    {caseStudy.sidebar.timeline}
-                  </span>
-                </div>
-              )}
-
-              <div>
-                <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-1">
-                  Platform
-                </span>
-                <span className="font-body font-bold text-base text-black">
-                  {caseStudy.sidebar.platform}
-                </span>
-              </div>
-
-              <div>
-                <span className="font-mono text-xs uppercase font-extrabold text-[#52525B] block mb-2">
-                  Tools &amp; Stack
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {caseStudy.sidebar.tools.map((tool) => (
-                    <span
-                      key={tool}
-                      className="px-2.5 py-1 bg-[#F8F6FF] border-2 border-black rounded-lg text-xs font-mono font-bold text-black"
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          {/* Right Content: Overview + Numbered Problem Cards */}
-          <div className="lg:col-span-8 flex flex-col gap-6 lg:gap-8">
-            {/* Overview Card */}
-            <div className="bg-white border-[3px] border-black rounded-[24px] shadow-[6px_6px_0px_#000000] p-6 sm:p-8">
-              <span className="px-3 py-1 bg-[#3B82F6] text-white border-2 border-black rounded-full text-xs font-mono font-bold inline-block mb-4 shadow-[2px_2px_0px_#000000]">
-                PROJECT CONTEXT
-              </span>
-              <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-black mb-4">
-                The Challenge &amp; Vision
-              </h2>
-              <p className="font-body text-black/85 text-base sm:text-lg leading-relaxed font-medium">
-                {caseStudy.overview}
-              </p>
-            </div>
-
-            {/* Numbered Problem Cards */}
-            <div className="flex flex-col gap-4">
-              <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-black mb-1">
-                Key Problems Solved
-              </h3>
-
-              {caseStudy.problems.map((problem) => (
-                <div
-                  key={problem.number}
-                  className="bg-white border-[3px] border-black rounded-[20px] shadow-[5px_5px_0px_#000000] hover:shadow-[7px_7px_0px_#000000] hover:-translate-y-0.5 transition-all p-5 sm:p-7 flex flex-col sm:flex-row items-start gap-4 sm:gap-6"
-                >
-                  <div className="flex-shrink-0 w-12 h-12 bg-[#FFD200] border-[3px] border-black rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-center font-heading font-extrabold text-xl text-black select-none">
-                    {problem.number}
+                {/* Heading with small icon */}
+                <div className="flex items-center gap-3 pr-16">
+                  <div className="w-10 h-10 rounded-xl bg-[#F8F6FF] border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] flex items-center justify-center flex-shrink-0">
+                    {renderSectionIcon(section.icon)}
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <h4 className="font-heading font-extrabold text-lg sm:text-xl text-black">
-                      {problem.title}
-                    </h4>
-                    <p className="font-body text-black/80 text-sm sm:text-base leading-relaxed font-medium">
-                      {problem.description}
-                    </p>
-                  </div>
+                  <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#18181B]">
+                    {section.title}
+                  </h2>
                 </div>
-              ))}
-            </div>
 
-            {/* Deliverables Badges */}
-            <div className="bg-white border-[3px] border-black rounded-[24px] shadow-[6px_6px_0px_#000000] p-6 sm:p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <Layers className="w-5 h-5 text-[#3B82F6] stroke-[2.5]" />
-                <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-black">
-                  What I Delivered
-                </h3>
-              </div>
-              <div className="flex flex-wrap gap-2.5">
-                {caseStudy.deliverables.map((item, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#F8F6FF] border-[2px] border-black rounded-full font-body font-bold text-xs sm:text-sm text-black shadow-[2px_2px_0px_#000000] hover:bg-[#FFD200] transition-colors select-none"
+                {/* Paragraph */}
+                {hasText && (
+                  <p className="max-w-[70ch] text-base sm:text-[18px] text-[#18181B]/85 font-body font-medium leading-[1.7]">
+                    {section.text}
+                  </p>
+                )}
+
+                {/* The Challenge: Key Problems Solved (3-column grid on desktop, 1 on mobile) */}
+                {hasProblems && (
+                  <div className="flex flex-col gap-3 pt-2">
+                    <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[#18181B]">
+                      Key Problems Solved
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {caseStudy.problems.map((prob) => (
+                        <div
+                          key={prob.number}
+                          className="bg-[#F8F6FF] border-[3px] border-[#18181B] rounded-[18px] p-5 shadow-[4px_4px_0px_#18181B] flex flex-col gap-2.5"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-[#FFD200] border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] flex items-center justify-center font-heading font-extrabold text-xs text-[#18181B] select-none">
+                            {prob.number}
+                          </div>
+                          <h4 className="font-heading font-extrabold text-base text-[#18181B] leading-snug">
+                            {prob.title}
+                          </h4>
+                          <p className="font-body text-xs sm:text-sm text-[#52525B] font-medium leading-relaxed">
+                            {prob.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Full-width Image Panel (shown if images[] has 1 or more items) */}
+                {hasImages && (
+                  <div
+                    className="w-full border-[3px] border-[#18181B] rounded-[20px] p-6 flex flex-col items-center justify-center"
+                    style={{ backgroundColor: caseStudy.color }}
                   >
-                    <CheckCircle className="w-4 h-4 text-[#10B981] stroke-[2.5]" />
-                    <span>{item}</span>
-                  </span>
-                ))}
-              </div>
-            </div>
+                    <div
+                      className={`w-full ${
+                        section.images.length >= 2
+                          ? 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'
+                          : 'flex justify-center'
+                      }`}
+                    >
+                      {section.images.map((img, imgIdx) => (
+                        <button
+                          key={imgIdx}
+                          type="button"
+                          onClick={() =>
+                            setLightboxImg({
+                              src: img,
+                              alt: section.caption || `${section.title} visual ${imgIdx + 1}`,
+                            })
+                          }
+                          className="overflow-hidden rounded-[14px] border-2 border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] hover:-translate-y-0.5 transition-all cursor-zoom-in group"
+                        >
+                          <img
+                            src={img}
+                            alt={section.caption || `${section.title} screen`}
+                            className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-200"
+                            loading="lazy"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    {section.caption && (
+                      <p className="font-mono text-xs font-bold text-[#18181B] mt-3 text-center">
+                        {section.caption}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* The Result: What I Delivered (Checklist of pills) */}
+                {hasDeliverables && (
+                  <div className="flex flex-col gap-3 pt-2">
+                    <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[#18181B]">
+                      What I Delivered
+                    </h3>
+                    <div className="flex flex-wrap gap-2.5">
+                      {caseStudy.deliverables.map((item, dIdx) => (
+                        <span
+                          key={dIdx}
+                          className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#F8F6FF] border-2 border-[#18181B] rounded-full font-body font-bold text-xs sm:text-sm text-[#18181B] shadow-[2px_2px_0px_#18181B] select-none"
+                        >
+                          <CheckCircle className="w-4 h-4 text-[#2F5BFF] stroke-[2.5]" />
+                          <span>{item}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+            );
+          })}
+
+        {/* ════════════════════════════════════════════════════
+            4. CLOSING CTA: Big Yellow Card
+           ════════════════════════════════════════════════════ */}
+        <section
+          className="bg-[#FFD200] border-[3px] border-[#18181B] rounded-[28px] shadow-[8px_8px_0px_#18181B] p-8 sm:p-12 text-center flex flex-col items-center gap-6"
+          aria-label="Contact call to action"
+        >
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border-2 border-[#18181B] rounded-full text-xs font-mono font-extrabold text-[#18181B] shadow-[2px_2px_0px_#18181B] select-none">
+            <span>✦</span>
+            <span>Available For Projects</span>
+          </div>
+
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-[#18181B] tracking-tight">
+            Let's work together
+          </h2>
+
+          <p className="font-body text-base sm:text-lg text-[#18181B] font-bold max-w-xl leading-relaxed">
+            Mobile apps, websites and design systems for English and Arabic audiences.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
+            {/* Email Button (Electric Blue) */}
+            <a
+              href={`mailto:${EMAIL}?subject=Project%20inquiry%20from%20your%20portfolio`}
+              className="neo-btn bg-[#2F5BFF] text-white px-7 py-3.5 rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] font-bold text-base min-h-[44px] w-full sm:w-auto"
+            >
+              <span>Email</span>
+              <span>✉</span>
+            </a>
+
+            {/* WhatsApp Button (Green #25D366) */}
+            {WHATSAPP_URL && (
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="neo-btn bg-[#25D366] text-[#18181B] px-7 py-3.5 rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] font-bold text-base min-h-[44px] w-full sm:w-auto"
+              >
+                <span>WhatsApp</span>
+                <span>💬</span>
+              </a>
+            )}
+
+            {/* See All Projects Button (White, links to /#work) */}
+            <a
+              href="/#work"
+              onClick={(e) => {
+                e.preventDefault();
+                onBack();
+              }}
+              className="neo-btn bg-white text-[#18181B] px-7 py-3.5 rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] font-bold text-base min-h-[44px] w-full sm:w-auto"
+            >
+              <span>See all projects</span>
+              <span>→</span>
+            </a>
           </div>
         </section>
 
         {/* ════════════════════════════════════════════════════
-            NEXT PROJECT FOOTER
+            5. NEXT CASE STUDY (Keep existing one)
            ════════════════════════════════════════════════════ */}
         {caseStudy.nextProject && (
-          <section className="pt-6 sm:pt-10">
+          <section className="pt-2">
             <div
               onClick={handleNextClick}
-              className="group w-full bg-white border-[3px] border-black rounded-[28px] shadow-[8px_8px_0px_#000000] hover:shadow-[12px_12px_0px_#000000] hover:-translate-y-1 p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 cursor-pointer transition-all duration-200"
+              className="group w-full bg-white border-[3px] border-[#18181B] rounded-[28px] shadow-[8px_8px_0px_#18181B] hover:shadow-[12px_12px_0px_#18181B] hover:-translate-y-1 p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 cursor-pointer transition-all duration-200"
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && handleNextClick()}
@@ -486,7 +471,7 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
                 <span className="text-xs font-mono font-extrabold text-[#52525B] uppercase tracking-wider mb-2">
                   Next Case Study
                 </span>
-                <span className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-black group-hover:text-[#3B82F6] transition-colors">
+                <span className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-[#18181B] group-hover:text-[#2F5BFF] transition-colors">
                   {caseStudy.nextProject.title} ↗
                 </span>
                 <span className="font-body text-sm font-bold text-[#52525B] mt-1">
@@ -494,7 +479,7 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
                 </span>
               </div>
 
-              <div className="w-14 h-14 rounded-full bg-[#3B82F6] text-white border-[3px] border-black shadow-[4px_4px_0px_#000000] flex items-center justify-center group-hover:translate-x-2 transition-transform">
+              <div className="w-14 h-14 rounded-full bg-[#2F5BFF] text-white border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] flex items-center justify-center group-hover:translate-x-2 transition-transform">
                 <ArrowRight className="w-7 h-7 stroke-[3]" />
               </div>
             </div>
