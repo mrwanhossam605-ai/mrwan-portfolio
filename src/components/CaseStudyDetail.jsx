@@ -136,7 +136,7 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
           aria-label={`${caseStudy.title} overview`}
         >
           {/* LEFT: Hero Tag, Title, Summary, Meta Row, Action Buttons */}
-          <div className="lg:col-span-7 flex flex-col items-start gap-5 sm:gap-6">
+          <div className="lg:col-span-7 flex flex-col items-start gap-5 sm:gap-6 min-w-0 w-full">
             {caseStudy.heroTag && (
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFD200] border-2 border-[#18181B] rounded-full text-xs font-mono font-extrabold text-[#18181B] shadow-[2px_2px_0px_#18181B] select-none">
                 <span>✦</span>
@@ -144,8 +144,21 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
               </div>
             )}
 
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl xl:text-[64px] text-[#18181B] tracking-tight leading-[1.08]">
-              {caseStudy.title}
+            <h1
+              className="font-heading font-extrabold text-[#18181B] tracking-tight w-full"
+              style={{
+                fontSize: 'clamp(40px, 5.2vw, 84px)',
+                lineHeight: 1,
+                overflowWrap: 'anywhere',
+              }}
+            >
+              {caseStudy.slug === 'wakandarides' ? (
+                <>Wakanda<wbr />Rides</>
+              ) : caseStudy.slug === 'flaride' ? (
+                <>Fla<wbr />Ride</>
+              ) : (
+                caseStudy.title
+              )}
             </h1>
 
             {caseStudy.summary && (
@@ -210,18 +223,45 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
               </div>
             )}
 
-            {/* Action Buttons: Behance & Live site (only shown if URLs exist) */}
-            {(caseStudy.behanceUrl || caseStudy.liveUrl) && (
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
+            {/* Action Buttons: Google Play & Website (only shown if URLs exist) */}
+            {(caseStudy.playStoreUrl || caseStudy.websiteUrl || caseStudy.behanceUrl || caseStudy.liveUrl) && (
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto pt-1">
+                {caseStudy.playStoreUrl && (
+                  <a
+                    href={caseStudy.playStoreUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Get ${caseStudy.title} on Google Play (opens in a new tab)`}
+                    className="neo-btn bg-[#2F5BFF] text-white h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-2 select-none w-full sm:w-auto"
+                  >
+                    <svg className="w-4 h-4 fill-white flex-shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <span>Get it on Google Play</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+                {caseStudy.websiteUrl && (
+                  <a
+                    href={caseStudy.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit ${caseStudy.title} website (opens in a new tab)`}
+                    className="neo-btn bg-white text-[#18181B] h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
+                  >
+                    <span>Visit website</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                )}
                 {caseStudy.behanceUrl && (
                   <a
                     href={caseStudy.behanceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="neo-btn bg-[#2F5BFF] text-white px-6 py-3 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] min-h-[44px]"
+                    className="neo-btn bg-[#2F5BFF] text-white h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
                   >
                     <span>View on Behance</span>
-                    <span>↗</span>
+                    <span aria-hidden="true">↗</span>
                   </a>
                 )}
                 {caseStudy.liveUrl && (
@@ -229,10 +269,10 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
                     href={caseStudy.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="neo-btn bg-white text-[#18181B] px-6 py-3 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] min-h-[44px]"
+                    className="neo-btn bg-white text-[#18181B] h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
                   >
                     <span>Live site</span>
-                    <span>↗</span>
+                    <span aria-hidden="true">↗</span>
                   </a>
                 )}
               </div>
@@ -262,8 +302,8 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
         {/* ════════════════════════════════════════════════════
             3. NUMBERED SECTIONS (The Goal, The Challenge, My Solution, The Result)
            ════════════════════════════════════════════════════ */}
-        {caseStudy.sections &&
-          caseStudy.sections.map((section, idx) => {
+        {(() => {
+          const visibleSections = (caseStudy.sections || []).filter((section) => {
             const isChallenge = section.title.toLowerCase().includes('challenge');
             const isResult = section.title.toLowerCase().includes('result');
             const hasText = Boolean(section.text && section.text.trim() !== '');
@@ -271,20 +311,27 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
             const hasProblems = Boolean(isChallenge && caseStudy.problems && caseStudy.problems.length > 0);
             const hasDeliverables = Boolean(isResult && caseStudy.deliverables && caseStudy.deliverables.length > 0);
 
-            // Hide any empty section: no text, no images, and no sub-components
-            if (!hasText && !hasImages && !hasProblems && !hasDeliverables) {
-              return null;
-            }
+            return hasText || hasImages || hasProblems || hasDeliverables;
+          });
+
+          return visibleSections.map((section, idx) => {
+            const isChallenge = section.title.toLowerCase().includes('challenge');
+            const isResult = section.title.toLowerCase().includes('result');
+            const hasText = Boolean(section.text && section.text.trim() !== '');
+            const hasImages = Boolean(section.images && section.images.length > 0);
+            const hasProblems = Boolean(isChallenge && caseStudy.problems && caseStudy.problems.length > 0);
+            const hasDeliverables = Boolean(isResult && caseStudy.deliverables && caseStudy.deliverables.length > 0);
+            const sequenceNumber = String(idx + 1).padStart(2, '0');
 
             return (
               <section
-                key={section.number || idx}
+                key={section.title || idx}
                 className="bg-white border-[3px] border-[#18181B] rounded-[28px] shadow-[8px_8px_0px_#18181B] p-6 sm:p-10 relative overflow-hidden flex flex-col gap-6"
                 aria-label={`${section.title} section`}
               >
-                {/* Round Number Badge in top-right corner */}
+                {/* Round Number Badge in top-right corner: numbered in sequence based on visible sections */}
                 <div className="absolute top-6 right-6 sm:top-8 sm:right-8 w-12 h-12 rounded-full bg-[#FFD200] border-[3px] border-[#18181B] shadow-[3px_3px_0px_#18181B] flex items-center justify-center font-heading font-extrabold text-lg text-[#18181B] select-none">
-                  {section.number}
+                  {sequenceNumber}
                 </div>
 
                 {/* Heading with small icon */}
@@ -394,7 +441,8 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
                 )}
               </section>
             );
-          })}
+          });
+        })()}
 
         {/* ════════════════════════════════════════════════════
             4. CLOSING CTA: Big Yellow Card

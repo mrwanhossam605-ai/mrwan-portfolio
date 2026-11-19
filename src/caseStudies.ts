@@ -39,6 +39,8 @@ export interface CaseStudy {
   accentColor?: string;
   summary: string;
   meta: CaseStudyMeta;
+  playStoreUrl?: string;
+  websiteUrl?: string;
   behanceUrl?: string;
   liveUrl?: string;
   mockupImage: string;
@@ -72,6 +74,8 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       platform: 'Mobile App (iOS & Android) + Responsive Web',
       scope: 'Lead UI/UX & Design Systems Designer (70+ screens)',
     },
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.wakandarides.mobile',
+    websiteUrl: 'https://www.wakandarides.com/',
     behanceUrl: '',
     liveUrl: '',
     mockupImage: '/wakanda.webp',
@@ -164,6 +168,8 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       platform: 'Cross-platform Mobile App (Flutter handoff)',
       scope: 'Product Designer & UX Strategist (80+ screens)',
     },
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.flaride.customer',
+    websiteUrl: 'https://www.flaride.com/',
     behanceUrl: '',
     liveUrl: '',
     mockupImage: '/flaride.webp',
@@ -256,6 +262,8 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       platform: 'Responsive Web (Desktop & Mobile)',
       scope: 'Corporate website, Arabic RTL',
     },
+    playStoreUrl: '',
+    websiteUrl: '',
     behanceUrl: '',
     liveUrl: '',
     mockupImage: '/almasilah.webp',
