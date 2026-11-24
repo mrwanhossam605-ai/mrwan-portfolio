@@ -132,11 +132,11 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
             2. HERO (Two columns on desktop, stacked on mobile)
            ════════════════════════════════════════════════════ */}
         <section
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-14 items-center"
           aria-label={`${caseStudy.title} overview`}
         >
           {/* LEFT: Hero Tag, Title, Summary, Meta Row, Action Buttons */}
-          <div className="lg:col-span-6 flex flex-col items-start gap-5 sm:gap-6 min-w-0 w-full">
+          <div className="lg:col-span-6 flex flex-col items-start gap-5 sm:gap-6 min-w-0 w-full lg:pr-4">
             {caseStudy.heroTag && (
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFD200] border-2 border-[#18181B] rounded-full text-xs font-mono font-extrabold text-[#18181B] shadow-[2px_2px_0px_#18181B] select-none">
                 <span>✦</span>
@@ -147,7 +147,7 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
             <h1
               className="font-heading font-extrabold text-[#18181B] tracking-tight w-full"
               style={{
-                fontSize: 'clamp(40px, 5vw, 80px)',
+                fontSize: 'clamp(40px, 4.6vw, 76px)',
                 lineHeight: 1,
               }}
             >
@@ -227,52 +227,111 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
 
             {/* Action Buttons: Google Play, Website, Behance (only shown if URLs exist) */}
             {(caseStudy.playStoreUrl || caseStudy.websiteUrl || caseStudy.behanceUrl || caseStudy.liveUrl) && (
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto pt-1">
+              <div
+                className="flex flex-wrap items-center gap-3 w-full sm:w-auto pt-1"
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '12px',
+                  alignItems: 'center',
+                }}
+              >
+                {/* 1. Google Play Button (Blue) */}
                 {caseStudy.playStoreUrl && (
                   <a
                     href={caseStudy.playStoreUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Get ${caseStudy.title} on Google Play (opens in a new tab)`}
-                    className="neo-btn bg-[#2F5BFF] text-white h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-2 select-none w-full sm:w-auto"
+                    aria-label={
+                      caseStudy.slug === 'wakandarides'
+                        ? 'Get WakandaRides on Google Play (opens in a new tab)'
+                        : `Get ${caseStudy.title} on Google Play (opens in a new tab)`
+                    }
+                    className="neo-btn bg-[#2F5BFF] text-white rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] font-bold text-sm sm:text-base select-none flex-[1_1_100%] sm:flex-[0_0_auto] w-full sm:w-auto"
+                    style={{
+                      whiteSpace: 'nowrap',
+                      height: '48px',
+                      padding: '0 22px',
+                      lineHeight: 1,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
                   >
                     <svg className="w-4 h-4 fill-white flex-shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M8 5v14l11-7z" />
                     </svg>
-                    <span>Get it on Google Play</span>
+                    <span>Google Play</span>
                     <span aria-hidden="true">↗</span>
                   </a>
                 )}
+
+                {/* 2. Website Button (White) */}
                 {caseStudy.websiteUrl && (
                   <a
                     href={caseStudy.websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Visit ${caseStudy.title} website (opens in a new tab)`}
-                    className="neo-btn bg-white text-[#18181B] h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
+                    aria-label="Visit the website (opens in a new tab)"
+                    className="neo-btn bg-white text-[#18181B] rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] font-bold text-sm sm:text-base select-none flex-[1_1_100%] sm:flex-[0_0_auto] w-full sm:w-auto"
+                    style={{
+                      whiteSpace: 'nowrap',
+                      height: '48px',
+                      padding: '0 22px',
+                      lineHeight: 1,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
                   >
-                    <span>Visit website</span>
+                    <span>Website</span>
                     <span aria-hidden="true">↗</span>
                   </a>
                 )}
+
+                {/* 3. Behance Button (White) */}
                 {caseStudy.behanceUrl && (
                   <a
                     href={caseStudy.behanceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Full case study on Behance for ${caseStudy.title} (opens in a new tab)`}
-                    className="neo-btn bg-white text-[#18181B] h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
+                    aria-label="Full case study on Behance (opens in a new tab)"
+                    className="neo-btn bg-white text-[#18181B] rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] font-bold text-sm sm:text-base select-none flex-[1_1_100%] sm:flex-[0_0_auto] w-full sm:w-auto"
+                    style={{
+                      whiteSpace: 'nowrap',
+                      height: '48px',
+                      padding: '0 22px',
+                      lineHeight: 1,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
                   >
-                    <span>Full case study on Behance</span>
+                    <span>Behance</span>
                     <span aria-hidden="true">↗</span>
                   </a>
                 )}
+
+                {/* 4. Live site Button (if exists and distinct from websiteUrl) */}
                 {caseStudy.liveUrl && !caseStudy.websiteUrl && (
                   <a
                     href={caseStudy.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="neo-btn bg-white text-[#18181B] h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
+                    className="neo-btn bg-white text-[#18181B] rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] font-bold text-sm sm:text-base select-none flex-[1_1_100%] sm:flex-[0_0_auto] w-full sm:w-auto"
+                    style={{
+                      whiteSpace: 'nowrap',
+                      height: '48px',
+                      padding: '0 22px',
+                      lineHeight: 1,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
                   >
                     <span>Live site</span>
                     <span aria-hidden="true">↗</span>
