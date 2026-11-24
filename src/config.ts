@@ -13,6 +13,10 @@ export const LINKEDIN_URL = "https://www.linkedin.com/in/mrwan-hossam-1618b0215/
 export const BEHANCE_URL = "https://behance.net/mrwanhossam121";
 export const CV_PATH = "/Mrwan-CV.pdf";
 
+// Web3Forms API Key for the Contact Form
+// Set to your Web3Forms access key from https://web3forms.com
+export const WEB3FORMS_KEY = "PASTE_KEY_HERE";
+
 // Case Study URLs (replace with real Behance / Notion / Figma case study links when ready)
 export const CASE_STUDY_LINKS = {
   wakandarides: 'https://behance.net/gallery/wakandarides',
