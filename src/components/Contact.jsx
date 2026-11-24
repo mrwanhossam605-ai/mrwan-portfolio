@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Download, ArrowUpRight, Copy, Check } from 'lucide-react';
+import { Mail, Download, Copy, Check } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 import { StarburstSticker, SmileySticker } from './Stickers';
 import { EMAIL, LINKEDIN_URL, BEHANCE_URL, CV_PATH, WHATSAPP_URL } from '../config';
@@ -52,15 +52,15 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-[120px] relative"
+      className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-24 scroll-mt-[120px] relative overflow-x-clip"
       aria-label="Contact Section"
     >
-      {/* Outer Wrapper with room for floating stickers */}
-      <div className="relative mx-auto max-w-4xl pt-6 pb-6">
+      {/* Outer Wrapper with room for top floating stickers */}
+      <div className="relative mx-auto max-w-4xl pt-6 pb-2">
         
         {/* Floating Sticker 1: Starburst (Top Right) */}
         <div
-          className="absolute -top-3 -right-2 sm:-top-5 sm:-right-6 z-20 pointer-events-none select-none"
+          className="absolute -top-3 right-0 sm:-top-5 sm:-right-6 z-20 pointer-events-none select-none"
           aria-hidden="true"
         >
           <StarburstSticker />
@@ -68,52 +68,10 @@ export default function Contact() {
 
         {/* Floating Sticker 2: Smiley (Top Left) */}
         <div
-          className="absolute -top-5 -left-3 sm:-top-6 sm:-left-6 z-20 pointer-events-none select-none"
+          className="absolute -top-5 left-0 sm:-top-6 sm:-left-6 z-20 pointer-events-none select-none"
           aria-hidden="true"
         >
           <SmileySticker />
-        </div>
-
-        {/* Floating Sticker 3: "say hi 👋" tag pill */}
-        <div
-          className="absolute -bottom-3 -right-2 sm:-bottom-4 sm:-right-4 z-20 select-none animate-sticker-pill"
-          aria-hidden="true"
-        >
-          <div className="px-4 py-2 bg-card-bg text-stroke font-heading font-extrabold text-sm sm:text-base border-3 border-stroke rounded-full shadow-neo rotate-6 hover:rotate-0 transition-transform">
-            say hi 👋
-          </div>
-        </div>
-
-        {/* Floating Sticker 4: Hand-drawn arrow pointing at buttons */}
-        <div
-          className="hidden md:flex absolute -bottom-6 left-6 z-20 flex-col items-center select-none pointer-events-none -rotate-12 animate-sticker-arrow"
-          aria-hidden="true"
-        >
-          <span className="bg-card-bg text-stroke text-xs font-bold px-2 py-0.5 border-2 border-stroke rounded-md shadow-[2px_2px_0_#18181B] font-heading mb-1">
-            drop a line! 📬
-          </span>
-          <svg
-            width="55"
-            height="45"
-            viewBox="0 0 55 45"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="text-stroke"
-          >
-            <path
-              d="M8 5C14 14 28 15 40 24C45 28 46 32 42 38"
-              stroke="#18181B"
-              strokeWidth="3.2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M32 34L43 38L47 27"
-              stroke="#18181B"
-              strokeWidth="3.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
         </div>
 
         {/* Big Centered Yellow Card */}
@@ -144,95 +102,140 @@ export default function Contact() {
           </p>
 
           {/* Action Pill Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 mb-6">
-            {/* Email me */}
+          <div
+            className="contact-btn-row w-full mb-0"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '12px',
+            }}
+          >
+            {/* 1. Email me (blue) */}
             <a
               href={`mailto:${EMAIL}?subject=Project%20inquiry%20from%20your%20portfolio`}
-              className="neo-btn bg-primary text-white text-base sm:text-lg px-7 py-3.5 sm:px-8 sm:py-4 font-extrabold w-full sm:w-auto"
+              className="neo-btn contact-btn bg-primary text-white font-extrabold text-base hover:bg-[#254acc]"
+              aria-label="Email me"
             >
               <Mail className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
               <span>Email me</span>
             </a>
 
-            {/* WhatsApp – visible with real WhatsApp URL */}
+            {/* 2. WhatsApp (green #25D366, black text) */}
             {WHATSAPP_URL && (
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="neo-btn bg-[#25D366] text-black border-3 border-black text-base sm:text-lg px-7 py-3.5 sm:px-8 sm:py-4 font-extrabold hover:bg-[#20ba5a] w-full sm:w-auto"
+                className="neo-btn contact-btn bg-[#25D366] text-[#18181B] font-extrabold text-base hover:bg-[#20ba5a]"
+                aria-label="WhatsApp (opens in a new tab)"
               >
                 <WhatsAppIcon className="w-5 h-5" />
                 <span>WhatsApp</span>
               </a>
             )}
 
-            {/* LinkedIn */}
+            {/* 3. LinkedIn ↗ */}
             <a
               href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="neo-btn bg-card-bg text-stroke text-base sm:text-lg px-7 py-3.5 sm:px-8 sm:py-4 font-extrabold hover:bg-page-bg w-full sm:w-auto"
+              className="neo-btn contact-btn bg-card-bg text-stroke font-extrabold text-base hover:bg-page-bg"
+              aria-label="LinkedIn profile (opens in a new tab)"
             >
               <LinkedinIcon className="w-5 h-5" />
-              <span>LinkedIn</span>
-              <ArrowUpRight className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
+              <span>LinkedIn ↗</span>
             </a>
 
-            {/* Behance */}
+            {/* 4. Behance ↗ */}
             <a
               href={BEHANCE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="neo-btn bg-card-bg text-stroke text-base sm:text-lg px-7 py-3.5 sm:px-8 sm:py-4 font-extrabold hover:bg-page-bg w-full sm:w-auto"
+              className="neo-btn contact-btn bg-card-bg text-stroke font-extrabold text-base hover:bg-page-bg"
+              aria-label="Behance profile (opens in a new tab)"
             >
               <BehanceIcon className="w-5 h-5" />
-              <span>Behance</span>
-              <ArrowUpRight className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
+              <span>Behance ↗</span>
             </a>
-          </div>
 
-          {/* Plain visible email text with Copy email button */}
-          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 bg-card-bg border-3 border-stroke rounded-full px-5 py-2.5 shadow-neo mb-4 select-none">
-            <span className="font-mono font-bold text-sm sm:text-base text-stroke select-all">
-              {EMAIL}
-            </span>
-            <button
-              type="button"
-              onClick={handleCopyEmail}
-              className="px-3.5 py-1.5 bg-page-bg hover:bg-secondary text-stroke text-xs sm:text-sm font-bold border-2 border-stroke rounded-full shadow-[2px_2px_0_#18181B] active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer flex items-center gap-1.5"
-              aria-label="Copy email address"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[3]" />
-                  <span className="text-[#10B981] font-extrabold">Copied ✓</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3.5 h-3.5 stroke-[2.5]" />
-                  <span>Copy email</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Reply time note */}
-          <p className="text-sm text-stroke/70 font-medium mb-8">Usually reply within 24 hours</p>
-
-          {/* Also: Download CV button */}
-          <div className="pt-6 border-t-2 border-stroke/20 flex justify-center">
+            {/* 5. Download CV (white, with the download icon) */}
             <a
               href={CV_PATH}
               download="Mrwan-CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="neo-btn bg-card-bg text-stroke text-sm sm:text-base px-6 py-2.5 font-bold hover:bg-page-bg"
-              aria-label="Download CV as PDF"
+              className="neo-btn contact-btn bg-card-bg text-stroke font-extrabold text-base hover:bg-page-bg"
+              aria-label="Download CV as PDF (opens in a new tab)"
             >
-              <Download className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
+              <Download className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
               <span>Download CV</span>
             </a>
+          </div>
+
+          {/* Email line: Pill with Copy button & reply note, with 16px spacing directly under the buttons */}
+          <div
+            className="flex flex-col items-center justify-center select-none"
+            style={{ marginTop: '16px' }}
+          >
+            <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 bg-card-bg border-3 border-stroke rounded-full px-5 py-2.5 shadow-neo">
+              <span className="font-mono font-bold text-sm sm:text-base text-stroke select-all">
+                {EMAIL}
+              </span>
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                className="px-3.5 py-1.5 bg-page-bg hover:bg-secondary text-stroke text-xs sm:text-sm font-bold border-2 border-stroke rounded-full shadow-[2px_2px_0_#18181B] active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer flex items-center gap-1.5"
+                aria-label="Copy email address"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[3]" />
+                    <span className="text-[#10B981] font-extrabold">Copied ✓</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Copy email</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Reply time note */}
+            <p className="text-sm text-stroke/70 font-medium mt-3 mb-0">
+              Usually reply within 24 hours
+            </p>
+          </div>
+
+          {/* Sticker: "drop a line!" fully inside card, bottom-left */}
+          <div
+            className="hidden sm:block absolute select-none pointer-events-none z-10"
+            style={{
+              left: '24px',
+              bottom: '24px',
+              transform: 'rotate(-4deg)',
+            }}
+            aria-hidden="true"
+          >
+            <div className="px-4 py-2 bg-card-bg text-stroke font-heading font-extrabold text-sm sm:text-base border-3 border-stroke rounded-full shadow-neo">
+              drop a line! 📬
+            </div>
+          </div>
+
+          {/* Sticker: "say hi 👋" fully inside card, bottom-right */}
+          <div
+            className="hidden sm:block absolute select-none pointer-events-none z-10"
+            style={{
+              right: '24px',
+              bottom: '24px',
+              transform: 'rotate(4deg)',
+            }}
+            aria-hidden="true"
+          >
+            <div className="px-4 py-2 bg-card-bg text-stroke font-heading font-extrabold text-sm sm:text-base border-3 border-stroke rounded-full shadow-neo">
+              say hi 👋
+            </div>
           </div>
         </div>
       </div>
