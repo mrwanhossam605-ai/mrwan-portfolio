@@ -64,78 +64,6 @@ function renderSectionIcon(iconName) {
 }
 
 /* ================================================================
-   HELPER: Section Image Panel
-   ================================================================ */
-function SectionImagePanel({ images, caseStudyColor, sectionTitle, sectionCaption, onZoom }) {
-  const [failedIndices, setFailedIndices] = useState({});
-
-  if (!images || images.length === 0) return null;
-
-  const validImages = images.filter((_, idx) => !failedIndices[idx]);
-  if (validImages.length === 0) return null;
-
-  return (
-    <div
-      className="w-full border-[3px] border-[#18181B] rounded-[20px] p-4 sm:p-6 flex flex-col items-center justify-center shadow-[4px_4px_0px_#18181B]"
-      style={{ backgroundColor: caseStudyColor }}
-    >
-      <div
-        className={`w-full ${
-          validImages.length >= 2
-            ? 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'
-            : 'flex justify-center'
-        }`}
-      >
-        {images.map((imgItem, idx) => {
-          if (failedIndices[idx]) return null;
-
-          const imgSrc = typeof imgItem === 'string' ? imgItem : (imgItem?.image || imgItem?.src || '');
-          const imgCaption = (typeof imgItem === 'object' && imgItem?.caption) ? imgItem.caption : (images.length === 1 ? sectionCaption : '');
-          const imgAlt = (typeof imgItem === 'object' && imgItem?.alt) ? imgItem.alt : (imgCaption || `${sectionTitle} visual ${idx + 1}`);
-          const imgWidth = (typeof imgItem === 'object' && imgItem?.width) ? imgItem.width : 1600;
-          const imgHeight = (typeof imgItem === 'object' && imgItem?.height) ? imgItem.height : 1000;
-          const webpSrc = imgSrc.endsWith('.png') ? imgSrc.replace(/\.png$/i, '.webp') : null;
-
-          return (
-            <div key={idx} className="flex flex-col items-center w-full">
-              <button
-                type="button"
-                onClick={() => onZoom({ src: imgSrc, alt: imgAlt, caption: imgCaption })}
-                className="w-full overflow-hidden rounded-[14px] border-2 border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] hover:-translate-y-0.5 transition-all cursor-zoom-in group bg-white"
-                aria-label={`View enlarged ${imgAlt}`}
-              >
-                <picture>
-                  {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
-                  <img
-                    src={imgSrc}
-                    alt={imgAlt}
-                    loading="lazy"
-                    width={imgWidth}
-                    height={imgHeight}
-                    onError={() => setFailedIndices((prev) => ({ ...prev, [idx]: true }))}
-                    className="w-full h-auto object-cover group-hover:scale-101 transition-transform duration-200"
-                  />
-                </picture>
-              </button>
-              {imgCaption && (
-                <p className="font-mono text-xs sm:text-sm font-bold text-[#18181B] mt-2.5 text-center px-2 select-none">
-                  {imgCaption}
-                </p>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      {sectionCaption && !images.some((img) => typeof img === 'object' && img?.caption) && (
-        <p className="font-mono text-xs sm:text-sm font-bold text-[#18181B] mt-3 text-center px-2 select-none">
-          {sectionCaption}
-        </p>
-      )}
-    </div>
-  );
-}
-
-/* ================================================================
    MAIN CASE STUDY DETAIL COMPONENT
    ================================================================ */
 export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
@@ -514,13 +442,44 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
 
                 {/* Full-width Image Panel (shown if images[] has 1 or more items) */}
                 {hasImages && (
-                  <SectionImagePanel
-                    images={section.images}
-                    caseStudyColor={caseStudy.color}
-                    sectionTitle={section.title}
-                    sectionCaption={section.caption}
-                    onZoom={setLightboxImg}
-                  />
+                  <div
+                    className="w-full border-[3px] border-[#18181B] rounded-[20px] p-6 flex flex-col items-center justify-center"
+                    style={{ backgroundColor: caseStudy.color }}
+                  >
+                    <div
+                      className={`w-full ${
+                        section.images.length >= 2
+                          ? 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'
+                          : 'flex justify-center'
+                      }`}
+                    >
+                      {section.images.map((img, imgIdx) => (
+                        <button
+                          key={imgIdx}
+                          type="button"
+                          onClick={() =>
+                            setLightboxImg({
+                              src: img,
+                              alt: section.caption || `${section.title} visual ${imgIdx + 1}`,
+                            })
+                          }
+                          className="overflow-hidden rounded-[14px] border-2 border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] hover:-translate-y-0.5 transition-all cursor-zoom-in group"
+                        >
+                          <img
+                            src={img}
+                            alt={section.caption || `${section.title} screen`}
+                            className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-200"
+                            loading="lazy"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    {section.caption && (
+                      <p className="font-mono text-xs font-bold text-[#18181B] mt-3 text-center">
+                        {section.caption}
+                      </p>
+                    )}
+                  </div>
                 )}
 
                 {/* The Result: What I Delivered (Checklist of pills) */}
