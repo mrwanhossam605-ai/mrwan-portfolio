@@ -564,3 +564,88 @@ body {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   FOOTER WORDMARK & STICKER MOTION
+   ========================================================================== */
+.wordmark-container {
+  clip-path: polygon(-50% -150%, 150% -150%, 150% 100%, -50% 100%);
+}
+
+@keyframes footerLetterWave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2.5%);
+  }
+}
+
+@keyframes footerStarSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.footer-sticker-star {
+  animation: footerStarSpin 18s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes footerPillFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(6deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(6deg);
+  }
+}
+
+@keyframes footerPillWiggle {
+  0%, 100% {
+    transform: translateY(0px) rotate(6deg);
+  }
+  25% {
+    transform: translateY(-2px) rotate(12deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(0deg);
+  }
+}
+
+.footer-sticker-h {
+  animation: footerPillFloat 4s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+.footer-sticker-h:hover {
+  animation: footerPillWiggle 0.45s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-sticker-star {
+    animation: none !important;
+    transform: rotate(-10deg) !important;
+  }
+  .footer-sticker-h {
+    animation: none !important;
+    transform: rotate(6deg) !important;
+  }
+  .wordmark-letter-col {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .wordmark-letter-char {
+    transform: none !important;
+    transition: color 0.2s ease !important;
+  }
+  .wordmark-letter-char:hover {
+    transform: none !important;
+    color: #FFD200 !important;
+  }
+}

@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUp, Copy, Check } from 'lucide-react';
-import { useInView } from '../hooks/useInView';
 import { EMAIL, LINKEDIN_URL, BEHANCE_URL, CV_PATH, WHATSAPP_URL } from '../config';
 
 export default function Footer() {
-  const [wordmarkRef, wordmarkInView] = useInView({ threshold: 0.15 });
+  const [hasEntered, setHasEntered] = useState(false);
+  const [isReplaying, setIsReplaying] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isFooterInView, setIsFooterInView] = useState(false);
+  const [waveActive, setWaveActive] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [tappedIndex, setTappedIndex] = useState(null);
+
   const containerRef = useRef(null);
   const measureRef = useRef(null);
+  const footerRef = useRef(null);
+  const entranceTimerRef = useRef(null);
+  const touchTimerRef = useRef(null);
+
   const [fontSize, setFontSize] = useState(120);
   const [copied, setCopied] = useState(false);
 
@@ -73,8 +83,67 @@ export default function Footer() {
     };
   }, []);
 
+  // IntersectionObserver: trigger entrance once at threshold 0.3, track in-view for wave pausing
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const inView = entry.isIntersecting;
+        setIsFooterInView(inView);
+        if (inView && !hasEntered) {
+          setHasEntered(true);
+          setIsAnimating(true);
+          entranceTimerRef.current = setTimeout(() => {
+            setWaveActive(true);
+            setIsAnimating(false);
+          }, 1150);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasEntered]);
+
+  // Replay entrance animation when "H." sticker button is clicked/tapped
+  const replayAnimation = () => {
+    if (isReplaying) return;
+    setWaveActive(false);
+    setIsAnimating(true);
+    setIsReplaying(true);
+
+    if (entranceTimerRef.current) clearTimeout(entranceTimerRef.current);
+
+    setTimeout(() => {
+      setIsReplaying(false);
+      entranceTimerRef.current = setTimeout(() => {
+        setWaveActive(true);
+        setIsAnimating(false);
+      }, 1150);
+    }, 40);
+  };
+
+  // Touch tap on letters triggers hover effect for 500ms
+  const handleLetterTouch = (index) => {
+    setTappedIndex(index);
+    if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
+    touchTimerRef.current = setTimeout(() => {
+      setTappedIndex(null);
+    }, 500);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (entranceTimerRef.current) clearTimeout(entranceTimerRef.current);
+      if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
+    };
+  }, []);
+
   return (
-    <footer className="w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Site Footer">
+    <footer ref={footerRef} className="w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Site Footer">
       {/* Full-width dark card inside page margins */}
       <div
         className="w-full max-w-container mx-auto bg-[#18181B] border-3 border-[#18181B] rounded-[32px] p-6 sm:p-10 md:p-12 relative overflow-hidden text-[#F8F6FF] select-none"
@@ -100,7 +169,11 @@ export default function Footer() {
             pointerEvents: 'none',
           }}
         >
-          Mrwan
+          {letters.map((char, i) => (
+            <span key={i} style={{ display: 'inline-block' }}>
+              {char}
+            </span>
+          ))}
         </span>
 
         {/* TOP ROW: Two columns on desktop, stacked on mobile */}
@@ -215,56 +288,97 @@ export default function Footer() {
 
         {/* GIANT WORDMARK CONTAINER (Measured for Auto-Fit) */}
         <div
-          ref={(node) => {
-            containerRef.current = node;
-            wordmarkRef.current = node;
-          }}
+          ref={containerRef}
           className="relative w-full mt-6 sm:mt-10 overflow-visible select-none"
         >
           {/* Overlapping Stickers on Top-Right of Wordmark (anchored at right: 24px, top: -28px) */}
           <div
-            className="absolute z-20 flex items-center gap-2 select-none pointer-events-none"
+            className="absolute z-20 flex items-center gap-2 select-none"
             style={{
               position: 'absolute',
               top: '-28px',
               right: '24px',
             }}
-            aria-hidden="true"
           >
-            {/* Small blue ✦ star sticker with gentle float */}
-            <div className="animate-sticker-1 inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-primary text-white border-3 border-stroke rounded-xl shadow-neo rotate-[-10deg]">
+            {/* Small blue ✦ star sticker rotates slowly (360deg over 18s, linear) */}
+            <div
+              className="footer-sticker-star inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-primary text-white border-3 border-stroke rounded-xl shadow-neo select-none pointer-events-none"
+              aria-hidden="true"
+            >
               <span className="text-lg sm:text-xl font-black">✦</span>
             </div>
 
-            {/* Yellow "H." pill sticker with gentle float */}
-            <div className="animate-sticker-2 inline-flex items-center px-3 sm:px-4 py-0.5 sm:py-1 bg-secondary text-stroke font-heading font-extrabold text-sm sm:text-lg border-3 border-stroke rounded-full shadow-neo rotate-[6deg]">
+            {/* Yellow "H." pill button: floats 6px, wiggles on hover, replays entrance animation */}
+            <button
+              type="button"
+              onClick={replayAnimation}
+              aria-label="Replay footer animation"
+              className="footer-sticker-h inline-flex items-center px-3 sm:px-4 py-0.5 sm:py-1 bg-secondary text-stroke font-heading font-extrabold text-sm sm:text-lg border-3 border-stroke rounded-full shadow-neo cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-[#18181B] select-none"
+            >
               <span>H.</span>
-            </div>
+            </button>
           </div>
 
-          {/* Auto-fit Wordmark "Mrwan" left-aligned with card padding, clipped only at the bottom */}
+          {/* Auto-fit Wordmark "Mrwan", clipped only at the bottom edge */}
           <div
-            className="w-full text-left font-heading font-extrabold text-[#F8F6FF] whitespace-nowrap translate-y-[9%]"
+            role="img"
+            aria-label="Mrwan"
+            className="wordmark-container w-full text-left font-heading font-extrabold text-[#F8F6FF] whitespace-nowrap translate-y-[9%]"
             style={{
               fontSize: `${fontSize}px`,
               lineHeight: 0.8,
               letterSpacing: '-0.04em',
             }}
           >
-            {letters.map((char, i) => (
-              <span key={i} className="inline-block overflow-hidden align-bottom">
+            {letters.map((char, i) => {
+              const isHovered = hoveredIndex === i || tappedIndex === i;
+              const hoverRotation = i % 2 === 0 ? 4 : -4;
+
+              return (
                 <span
-                  className={`inline-block transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
-                    wordmarkInView ? 'translate-y-0' : 'translate-y-full'
-                  }`}
+                  key={i}
+                  aria-hidden="true"
+                  className="wordmark-letter-col inline-block"
                   style={{
-                    transitionDelay: `${i * 60}ms`,
+                    display: 'inline-block',
+                    willChange: isAnimating ? 'transform' : 'auto',
+                    transform: (!hasEntered || isReplaying)
+                      ? 'translateY(110%) rotate(8deg)'
+                      : 'translateY(0) rotate(0deg)',
+                    opacity: (!hasEntered || isReplaying) ? 0 : 1,
+                    transition: (!hasEntered || isReplaying)
+                      ? 'none'
+                      : 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    transitionDelay: (!hasEntered || isReplaying) ? '0ms' : `${i * 70}ms`,
+                    animation: waveActive ? 'footerLetterWave 3.6s ease-in-out infinite' : 'none',
+                    animationDelay: waveActive ? `${i * 120}ms` : '0ms',
+                    animationPlayState:
+                      !isFooterInView || hoveredIndex !== null || tappedIndex !== null
+                        ? 'paused'
+                        : 'running',
                   }}
                 >
-                  {char}
+                  <span
+                    className="wordmark-letter-char inline-block cursor-pointer select-none"
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onTouchStart={() => handleLetterTouch(i)}
+                    style={{
+                      display: 'inline-block',
+                      transform: isHovered
+                        ? `translateY(-12%) rotate(${hoverRotation}deg)`
+                        : 'translateY(0) rotate(0deg)',
+                      color: isHovered ? '#FFD200' : '#F8F6FF',
+                      transition:
+                        'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.35s ease',
+                      willChange: isHovered ? 'transform' : 'auto',
+                    }}
+                  >
+                    {char}
+                  </span>
                 </span>
-              </span>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
