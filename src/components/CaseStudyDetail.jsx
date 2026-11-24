@@ -136,7 +136,7 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
           aria-label={`${caseStudy.title} overview`}
         >
           {/* LEFT: Hero Tag, Title, Summary, Meta Row, Action Buttons */}
-          <div className="lg:col-span-7 flex flex-col items-start gap-5 sm:gap-6 min-w-0 w-full">
+          <div className="lg:col-span-6 flex flex-col items-start gap-5 sm:gap-6 min-w-0 w-full">
             {caseStudy.heroTag && (
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFD200] border-2 border-[#18181B] rounded-full text-xs font-mono font-extrabold text-[#18181B] shadow-[2px_2px_0px_#18181B] select-none">
                 <span>✦</span>
@@ -147,15 +147,17 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
             <h1
               className="font-heading font-extrabold text-[#18181B] tracking-tight w-full"
               style={{
-                fontSize: 'clamp(40px, 5.2vw, 84px)',
+                fontSize: 'clamp(40px, 5vw, 80px)',
                 lineHeight: 1,
-                overflowWrap: 'anywhere',
               }}
             >
-              {caseStudy.slug === 'wakandarides' ? (
-                <>Wakanda<wbr />Rides</>
-              ) : caseStudy.slug === 'flaride' ? (
-                <>Fla<wbr />Ride</>
+              {caseStudy.titleLines && caseStudy.titleLines.length > 0 ? (
+                caseStudy.titleLines.map((line, idx) => (
+                  <React.Fragment key={idx}>
+                    {line}
+                    {idx < caseStudy.titleLines.length - 1 && <br />}
+                  </React.Fragment>
+                ))
               ) : (
                 caseStudy.title
               )}
@@ -223,7 +225,7 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
               </div>
             )}
 
-            {/* Action Buttons: Google Play & Website (only shown if URLs exist) */}
+            {/* Action Buttons: Google Play, Website, Behance (only shown if URLs exist) */}
             {(caseStudy.playStoreUrl || caseStudy.websiteUrl || caseStudy.behanceUrl || caseStudy.liveUrl) && (
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto pt-1">
                 {caseStudy.playStoreUrl && (
@@ -258,13 +260,14 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
                     href={caseStudy.behanceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="neo-btn bg-[#2F5BFF] text-white h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
+                    aria-label={`Full case study on Behance for ${caseStudy.title} (opens in a new tab)`}
+                    className="neo-btn bg-white text-[#18181B] h-12 px-6 font-bold text-sm sm:text-base rounded-full border-[3px] border-[#18181B] shadow-[4px_4px_0px_#18181B] hover:bg-[#F8F6FF] hover:shadow-[6px_6px_0px_#18181B] flex items-center justify-center gap-1.5 select-none w-full sm:w-auto"
                   >
-                    <span>View on Behance</span>
+                    <span>Full case study on Behance</span>
                     <span aria-hidden="true">↗</span>
                   </a>
                 )}
-                {caseStudy.liveUrl && (
+                {caseStudy.liveUrl && !caseStudy.websiteUrl && (
                   <a
                     href={caseStudy.liveUrl}
                     target="_blank"
@@ -279,17 +282,17 @@ export default function CaseStudyDetail({ slug, onBack, onSelectProject }) {
             )}
           </div>
 
-          {/* RIGHT: Main Mockup in thick-bordered frame with project color background */}
-          <div className="lg:col-span-5 flex justify-center items-center">
+          {/* RIGHT: Main Mockup in thick-bordered frame with project color background (about 15% larger on desktop) */}
+          <div className="lg:col-span-6 flex justify-center items-center w-full my-auto">
             <div
-              className="w-full border-[3px] border-[#18181B] rounded-[28px] sm:rounded-[36px] shadow-[8px_8px_0px_#18181B] p-4 sm:p-6 lg:p-8 overflow-hidden flex items-center justify-center"
+              className="w-full border-[3px] border-[#18181B] rounded-[28px] sm:rounded-[36px] shadow-[8px_8px_0px_#18181B] p-4 sm:p-6 lg:p-7 overflow-hidden flex items-center justify-center"
               style={{ backgroundColor: caseStudy.color }}
             >
               <div className="w-full aspect-[16/10] bg-white/40 border-2 border-[#18181B] rounded-[18px] overflow-hidden flex items-center justify-center relative shadow-inner">
                 <img
                   src={caseStudy.mockupImage}
                   srcSet={caseStudy.mockupSrcSet}
-                  sizes="(max-width: 1024px) 100vw, 600px"
+                  sizes="(max-width: 1024px) 100vw, 700px"
                   alt={`${caseStudy.title} interface showcase`}
                   className="w-full h-full object-cover object-center"
                   loading="eager"

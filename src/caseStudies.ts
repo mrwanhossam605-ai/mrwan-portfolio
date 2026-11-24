@@ -32,6 +32,7 @@ export interface CaseStudy {
   slug: string;
   id: string;
   title: string;
+  titleLines?: string[];
   figmaFile?: string;
   heroTag?: string;
   color: string;
@@ -60,6 +61,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     slug: 'wakandarides',
     id: '01',
     title: 'WakandaRides',
+    titleLines: ['Wakanda', 'Rides'],
     figmaFile: 'wakandarides.fig',
     heroTag: 'Ride-Hailing & Carpooling • Canada • Freelance',
     color: '#FFD200', // Yellow from homepage
@@ -68,15 +70,15 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     summary:
       'A seamless end-to-end carpooling platform connecting verified drivers with everyday commuters across Canada, with instant seat booking, live GPS tracking, and trust-first verification.',
     meta: {
-      client: '',
+      client: 'Wakanda Technology Inc.',
       role: 'UI/UX Designer',
       timeline: '',
-      platform: 'Mobile App (iOS & Android) + Responsive Web',
-      scope: 'Lead UI/UX & Design Systems Designer (70+ screens)',
+      platform: 'Mobile App',
+      scope: '70+ screens · Design system',
     },
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.wakandarides.mobile',
     websiteUrl: 'https://www.wakandarides.com/',
-    behanceUrl: '',
+    behanceUrl: 'https://www.behance.net/gallery/247378851/Wakanda-Rides-UX-Case-Study',
     liveUrl: '',
     mockupImage: '/wakanda.webp',
     mockupSrcSet: '/wakanda-640.webp 640w, /wakanda.webp 1024w',
@@ -154,6 +156,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     slug: 'flaride',
     id: '02',
     title: 'FlaRide',
+    titleLines: ['FlaRide'],
     figmaFile: 'flaride.fig',
     heroTag: 'Mobility & On-Demand Delivery • Africa • Freelance',
     color: '#2F5BFF', // Electric Blue from homepage
@@ -162,7 +165,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     summary:
       'An African super app unifying ride-hailing, food delivery, and parcel shipping into a single lightweight interface with zero app-switching friction and smart offline caching.',
     meta: {
-      client: '',
+      client: 'Wakanda Technology Inc.',
       role: 'UI/UX Designer',
       timeline: '',
       platform: 'Cross-platform Mobile App (Flutter handoff)',
@@ -170,7 +173,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     },
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.flaride.customer',
     websiteUrl: 'https://www.flaride.com/',
-    behanceUrl: '',
+    behanceUrl: 'https://www.behance.net/gallery/252000539/Flaride-UX-Case-Study',
     liveUrl: '',
     mockupImage: '/flaride.webp',
     mockupSrcSet: '/flaride-640.webp 640w, /flaride.webp 1024w',
@@ -248,6 +251,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     slug: 'almasilah',
     id: '03',
     title: 'Al-Masilah',
+    titleLines: ['Al-Masilah'],
     figmaFile: 'almasilah.fig',
     heroTag: 'Corporate Web Experience • Kuwait • Remote Delivery',
     color: '#E9E4FF', // Lavender from homepage
@@ -264,7 +268,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     },
     playStoreUrl: '',
     websiteUrl: '',
-    behanceUrl: '',
+    behanceUrl: 'https://www.behance.net/gallery/252041721/Al-Masilah-Elevator-Company-Website-UX-Case-Study',
     liveUrl: '',
     mockupImage: '/almasilah.webp',
     mockupSrcSet: '/almasilah-640.webp 640w, /almasilah.webp 1024w',
