@@ -13,12 +13,20 @@ export interface CaseStudyMeta {
   scope?: string;
 }
 
+export interface SectionImageItem {
+  image: string;
+  caption?: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+}
+
 export interface SectionItem {
   number: string;
   icon?: string;
   title: string;
   text?: string;
-  images?: string[];
+  images?: (string | SectionImageItem)[];
   caption?: string;
 }
 
@@ -85,21 +93,21 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
     problems: [
       {
         number: '01',
-        title: 'Trust & Safety Hesitations',
+        title: 'Trust between strangers',
         description:
-          'Users were reluctant to share rides with strangers without transparent verification. I designed a tiered badge system featuring verified Government ID, university/corporate email verification, and driver safety ratings directly on the ride card.',
+          "Riders need to trust a driver they've never met. I designed driver ID verification and student email verification so trust is built before the first ride.",
       },
       {
         number: '02',
-        title: 'Complex Route & Seat Matching',
+        title: 'The right information at the right moment',
         description:
-          'Drivers often took detours that annoyed passengers. I created an interactive route preview with pickup tolerance radius and instant seat selection, making stops transparent before booking confirmation.',
+          "The home screen adapts to the user's ride status. With no trip, it focuses on finding or posting a ride. With an active trip, it shows pickup location, driver information and live status, so users don't hunt through screens.",
       },
       {
         number: '03',
-        title: 'Friction in Payment Settlement',
+        title: 'Posting a ride without friction',
         description:
-          'Cash handling caused post-ride awkwardness. I integrated seamless digital wallet escrow: funds are held securely at booking and released automatically upon arrival scan or geolocation completion.',
+          'I broke posting a ride into clear steps (route, date and time, vehicle, preferences, seats and pricing), with suggested pricing to help drivers set a fair price.',
       },
     ],
     deliverables: [
@@ -132,8 +140,31 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
         number: '03',
         icon: 'Lightbulb',
         title: 'My Solution',
-        text: '', // To be filled by user
-        images: [],
+        text:
+          "I designed the full journey: onboarding, sign-in with email, Google, Facebook or Apple, student verification with ride credits, driver ID verification, seat selection, live trip tracking and chat. I followed a 'Zero Popups' principle, so information appears inside the screen instead of interrupting people, and I shaped each flow through close feedback from the client. Everything sits on one design system.",
+        images: [
+          {
+            image: '/images/wakandarides/onboarding-auth.png',
+            caption: 'Onboarding and sign-in, designed to be fast, clear and frustration-free.',
+            alt: 'WakandaRides splash, onboarding, sign-in, sign-up and password reset screens',
+            width: 1600,
+            height: 1622,
+          },
+          {
+            image: '/images/wakandarides/home.png',
+            caption: "A home screen that adapts to the user's ride status.",
+            alt: 'WakandaRides default home and active ride home screens',
+            width: 783,
+            height: 1125,
+          },
+          {
+            image: '/images/wakandarides/post-a-ride.png',
+            caption: 'Posting a ride in clear steps, from route to pricing.',
+            alt: 'WakandaRides post a ride flow',
+            width: 783,
+            height: 927,
+          },
+        ],
         caption: '',
       },
       {
@@ -141,7 +172,15 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
         icon: 'CheckCircle2',
         title: 'The Result',
         text: '', // To be filled by user
-        images: [],
+        images: [
+          {
+            image: '/images/wakandarides/design-system.png',
+            caption: 'One design system across the mobile app and website.',
+            alt: 'WakandaRides design system',
+            width: 1600,
+            height: 900,
+          },
+        ],
         caption: '',
       },
     ],
